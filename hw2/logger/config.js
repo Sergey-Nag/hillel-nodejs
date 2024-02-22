@@ -27,11 +27,13 @@ function loadConfig() {
 }
 
 function initConfig(config) {
-    const logLevelName = (process.env.LOG_LEVEL ?? config.logLevel)?.toUpperCase();
-    const appenderName = (process.env.LOG_APPENDER ?? config.appender)?.toUpperCase();
+    const logLevel = LEVEL[process.env.LOG_LEVEL?.toUpperCase()]
+        ?? LEVEL[config.logLevel?.toUpperCase()]
+        ?? defaultConfig.logLevel;
 
-    const logLevel = LEVEL[logLevelName] ?? defaultConfig.logLevel;
-    const appender = APPENDER[appenderName] ?? defaultConfig.appender;
+    const appender = APPENDER[process.env.LOG_APPENDER?.toUpperCase()]
+        ?? APPENDER[config.appender?.toUpperCase()]
+        ?? defaultConfig.appender;
 
     return {
         logLevel,
@@ -41,5 +43,5 @@ function initConfig(config) {
 }
 
 const config = initConfig(loadConfig());
-
+console.log('config', config);
 export default config;
