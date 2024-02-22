@@ -1,15 +1,20 @@
-export const level = {
+export const LEVEL = {
     ERROR: 'ERROR',
     WARN: 'WARN',
     INFO: 'INFO',
+    DEBUG: 'DEBUG',
+    TRACE: 'TRACE',
 };
 
-export const scoreLevel = {
-    [level.ERROR]: 1,
-    [level.WARN]: 2,
-    [level.INFO]: 3,
+export const SCORE_LEVEL = {
+    [LEVEL.ERROR]: 1,
+    [LEVEL.WARN]: 2,
+    [LEVEL.INFO]: 3,
+    [LEVEL.DEBUG]: 4,
+    [LEVEL.TRACE]: 5,
 };
 
-export const appender = {
+export const APPENDER = {
     CONSOLE: 'CONSOLE',
+    FILE: 'FILE',
 };

@@ -1,9 +1,11 @@
-import { appender } from './constants.js';
+import { APPENDER } from './constants.js';
 import config from './config.js';
 import consoleAppender from './appenders/console.js';
+import fileAppender from './appenders/file.js';
 
 const appenders = {
-    [appender.CONSOLE]: consoleAppender,
+    [APPENDER.CONSOLE]: consoleAppender,
+    [APPENDER.FILE]: fileAppender,
     [undefined]: consoleAppender,
 };
 

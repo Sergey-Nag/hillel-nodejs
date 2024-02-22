@@ -1,24 +1,28 @@
-import { level } from '../constants.js';
+import { LEVEL } from '../constants.js';
+import { formatMessage } from '../messageConfig.js';
 
-const consoleColors = {
-    [level.INFO]: '\x1b[32m%s\x1b[0m',
-    [level.WARN]: '\x1b[33m%s\x1b[0m',
-    [level.ERROR]: '\x1b[31m%s\x1b[0m',
+const RED = '\x1b[31m';
+const YELLOW = '\x1b[33m';
+const GREEN = '\x1b[32m';
+const BLUE = '\x1b[34m';
+const MAGENTA = '\x1b[35m';
+const RESET = '\x1b[0m';
+
+const messageColors = {
+    [LEVEL.INFO]: BLUE,
+    [LEVEL.WARN]: YELLOW,
+    [LEVEL.ERROR]: RED,
+    [LEVEL.DEBUG]: GREEN,
+    [LEVEL.TRACE]: MAGENTA,
 };
 
 function log(date, level, category, ...messages) {
-    const color = consoleColors[level];
-    const formattedDate = new Date(date).toISOString();
+    const color = messageColors[level];
 
-    console.log(color, formatMessage(formattedDate, level, category, ...messages));
-}
-
-function formatMessage(date, level, category, ...messages) {
-    const message = messages.map((msg) => {
-        return `${JSON.stringify(msg)}`;
-    }).join(' ');
-
-    return `Date: ${date}, Category: ${category}, Level: ${level}, Message: ${message}`;
+    console.log(
+        `${color}%s${RESET}`,
+        formatMessage(date, level, category, ...messages),
+    );
 }
 
 export default { log };

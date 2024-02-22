@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node --env-file=./.env --experimental-specifier-resolution=node index.js"
+    "start": "node index.js",
+    "start:env": "node --env-file=.env index.js"
   },
   "author": "",
   "license": "ISC",
