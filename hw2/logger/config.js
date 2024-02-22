@@ -43,5 +43,5 @@ function initConfig(config) {
 }
 
 const config = initConfig(loadConfig());
-console.log('config', config);
+
 export default config;
