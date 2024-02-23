@@ -6,12 +6,12 @@ const filePath = './app.log';
 const errorFilePath = './app_error.log';
 
 function log(date, level, category, ...messages) {
-    const message = formatMessage(date, level, category, ...messages);
+    const message = formatMessage(date, level, category, ...messages) + '\n';
 
-    appendFile(filePath, message + '\n', { flag: 'a+' });
+    appendFile(filePath, message, { flag: 'a+' });
 
     if (level === LEVEL.ERROR) {
-        appendFile(errorFilePath, message + '\n', { flag: 'a+' });
+        appendFile(errorFilePath, message, { flag: 'a+' });
     }
 }
 

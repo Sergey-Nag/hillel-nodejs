@@ -1,6 +1,5 @@
-import { existsSync, fstatSync, readFileSync } from 'fs';
-import { LEVEL, APPENDER, SCORE_LEVEL } from './constants.js';
-
+import { existsSync, readFileSync } from 'fs';
+import { APPENDER, LEVEL, SCORE_LEVEL } from './constants.js';
 
 const defaultConfig = {
     logLevel: LEVEL.INFO,
@@ -17,22 +16,19 @@ function loadConfig() {
             return config;
         } catch (e) {
             console.log(`\nError parsing ${LOG_CONFIG_FILE} file: ${e.message}. Using default config\n`);
-            return defaultConfig;
         }
+    } else if (LOG_CONFIG_FILE) {
+        console.log(`\n${LOG_CONFIG_FILE} config file not found! Using default config\n`);
     }
-
-    LOG_CONFIG_FILE && console.log(`\n${LOG_CONFIG_FILE} config file not found! Using default config\n`);
-
-    return defaultConfig;
 }
 
 function initConfig(config) {
     const logLevel = LEVEL[process.env.LOG_LEVEL?.toUpperCase()]
-        ?? LEVEL[config.logLevel?.toUpperCase()]
+        ?? LEVEL[config?.logLevel?.toUpperCase()]
         ?? defaultConfig.logLevel;
 
     const appender = APPENDER[process.env.LOG_APPENDER?.toUpperCase()]
-        ?? APPENDER[config.appender?.toUpperCase()]
+        ?? APPENDER[config?.appender?.toUpperCase()]
         ?? defaultConfig.appender;
 
     return {
