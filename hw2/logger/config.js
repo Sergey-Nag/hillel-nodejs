@@ -1,9 +1,11 @@
 import { existsSync, readFileSync } from 'fs';
-import { APPENDER, LEVEL, SCORE_LEVEL } from './constants.js';
+import { APPENDER, LEVEL, SCORE_LEVEL, DELIMETER, FORMATTER } from './constants.js';
 
 const defaultConfig = {
     logLevel: LEVEL.INFO,
-    appender: APPENDER.CONSOLE,
+    appenders: [APPENDER.CONSOLE],
+    delimeter: DELIMETER,
+    formatter: FORMATTER.DEFAULT,
 };
 
 function loadConfig() {
@@ -22,22 +24,50 @@ function loadConfig() {
     }
 }
 
-function initConfig(config) {
-    const logLevel = LEVEL[process.env.LOG_LEVEL?.toUpperCase()]
+const getDefinedLevel = (config) => {
+    return LEVEL[process.env.LOG_LEVEL?.toUpperCase()]
         ?? LEVEL[config?.logLevel?.toUpperCase()]
         ?? defaultConfig.logLevel;
+}
 
-    const appender = APPENDER[process.env.LOG_APPENDER?.toUpperCase()]
-        ?? APPENDER[config?.appender?.toUpperCase()]
-        ?? defaultConfig.appender;
+const getDefinedAppenders = (config) => {
+    const envAppenders = process.env.LOG_APPENDERS?.split(',');
+    const appenders = config?.appenders ?? defaultConfig.appenders;
+
+    return (envAppenders ?? appenders)
+        .map((a) => APPENDER[a.trim().toUpperCase()])
+        .filter(Boolean);
+}
+
+const getDefinedDelimeter = (config) => {
+    return process.env.LOG_DELIMETER
+        ?? config?.delimeter
+        ?? defaultConfig.delimeter;
+}
+
+const getDefinedFormatter = (config) => {
+    return FORMATTER[process.env.LOG_FORMATTER?.toUpperCase()]
+        ?? FORMATTER[config?.formatter?.toUpperCase()]
+        ?? defaultConfig.formatter;
+}
+
+function initConfig(config) {
+    const logLevel = getDefinedLevel(config);
+    const appenders = getDefinedAppenders(config);
+    const delimeter = getDefinedDelimeter(config);
+    const formatter = getDefinedFormatter(config);
 
     return {
         logLevel,
-        appender,
+        appenders,
+        formatter,
+        delimeter,
         scoreLevel: SCORE_LEVEL[logLevel],
     };
 }
 
-const config = initConfig(loadConfig());
+const loadedConfig = loadConfig();
+const config = initConfig(loadedConfig);
 
+console.log('Config:', config);
 export default config;

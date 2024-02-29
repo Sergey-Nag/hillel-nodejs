@@ -18,3 +18,11 @@ export const APPENDER = {
     CONSOLE: 'CONSOLE',
     FILE: 'FILE',
 };
+
+export const FORMATTER = {
+    JSON: 'JSON',
+    DEFAULT: 'DEFAULT',
+    CSV: 'CSV',
+};
+
+export const DELIMETER = ', ';

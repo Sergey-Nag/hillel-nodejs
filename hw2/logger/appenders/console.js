@@ -1,5 +1,4 @@
 import { LEVEL } from '../constants.js';
-import { formatMessage } from '../messageConfig.js';
 
 const RED = '\x1b[31m';
 const YELLOW = '\x1b[33m';
@@ -16,12 +15,12 @@ const messageColors = {
     [LEVEL.TRACE]: MAGENTA,
 };
 
-function log(date, level, category, ...messages) {
+function log(format, date, level, category, ...messages) {
     const color = messageColors[level];
 
     console.log(
         `${color}%s${RESET}`,
-        formatMessage(date, level, category, ...messages),
+        format(date, level, category, ...messages),
     );
 }
 

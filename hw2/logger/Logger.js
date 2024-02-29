@@ -1,5 +1,6 @@
 import { LEVEL, SCORE_LEVEL } from './constants.js';
-import * as appenderStrategy from './appenderStrategy.js';
+import * as appenderStrategy from './appenders/strategy.js';
+import * as formatterStrategy from './formatters/strategy.js';
 import config from './config.js';
 
 function Logger(category) {
@@ -21,10 +22,11 @@ function Logger(category) {
 }
 
 const appender = appenderStrategy.getAppender();
+const formatter = formatterStrategy.getFormatter();
 
 function executeLog(level, category, ...messages) {
     if (SCORE_LEVEL[level] <= config.scoreLevel) {
-        appender.log(Date.now(), level, category, ...messages);
+        appender.log(formatter, Date.now(), level, category, ...messages);
     }
 }
 
