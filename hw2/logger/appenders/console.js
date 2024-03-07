@@ -2,6 +2,7 @@ import { Readable } from 'stream';
 import { logsEmitter } from '../Logger.js';
 import { LOG_EVENT_NAME } from '../constants.js';
 import FileNameTransform from './transformers/FileNameTransform.js';
+import { createCloseStream } from './utils.js';
 
 
 function init(FormatTransform) {
@@ -15,6 +16,9 @@ function init(FormatTransform) {
     logsEmitter.on(LOG_EVENT_NAME, (date, level, category, ...messages) => {
         logStream.push({ date, level, category, messages }, 'utf-8');
     });
+
+    process.on('exit', createCloseStream(logStream));
+    process.on('SIGINT', createCloseStream(logStream));
 }
 
 export default { init };
