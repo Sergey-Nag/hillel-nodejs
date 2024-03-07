@@ -1,49 +1,68 @@
-import { existsSync, } from 'fs';
-import { appendFile } from 'fs/promises';
+import { createWriteStream, existsSync, writeFileSync } from 'fs';
+import { Readable } from 'stream';
+import { logsEmitter } from '../Logger.js';
 import config from '../config.js';
-import { FORMATTER, LEVEL } from '../constants.js';
+import { CSV_HEADERS, FORMATTER, LOG_EVENT_NAME } from '../constants.js';
+import CSVMessageTransform from './transformers/CSVMessageTransform.js';
+import FileNameTransform from './transformers/FileNameTransform.js';
+import IsErrorTransform from './transformers/IsErrorTransform.js';
 
 const filePath = './app';
 const errorFilePath = './app_error';
 
-function log(format, date, level, category, ...messages) {
-    const message = format(date, level, category, ...messages) + '\n';
+function init(FormatTransform) {
+    const logStream = new Readable({ objectMode: true, read: () => {} });
 
-    if (config.formatter === FORMATTER.CSV) {
-        writeCSVLog(message, level === LEVEL.ERROR, date);
-    } else {
-        writeTextLog(message, level === LEVEL.ERROR);
-    }
+    const fileStream = config.formatter === FORMATTER.CSV
+        ? createCSVWriteStream(filePath)
+        : createLogWriteStream(filePath);
+
+    const errorFileStream = config.formatter === FORMATTER.CSV
+        ? createCSVWriteStream(errorFilePath)
+        : createLogWriteStream(errorFilePath);
+
+    const logPipline = logStream.pipe(new FileNameTransform())
+
+    logPipline
+        .pipe(new FormatTransform())
+        .pipe(new CSVMessageTransform())
+        .pipe(fileStream);
+
+    logPipline
+        .pipe(new IsErrorTransform())
+        .pipe(new FormatTransform())
+        .pipe(new CSVMessageTransform())
+        .pipe(errorFileStream);
+
+    logsEmitter.on(LOG_EVENT_NAME, (date, level, category, ...messages) => {
+        logStream.push({ date, level, category, messages }, 'utf8');
+    });
+
+    process.on('exit', () => {
+        fileStream.end();
+        errorFileStream.end();
+    });
 }
 
-async function writeCSVLog(message, writeError, date) {
-    const logDate = new Date(date);
+function createLogWriteStream(fileName) {
+    const logFileName = `${fileName}.log`;
+
+    return createWriteStream(logFileName, { flags: 'a+', encoding: 'utf8' });
+}
+
+function createCSVWriteStream(fileName) {
+    const logDate = new Date()
     const day = `${logDate.getDate()}`.padStart(2, '0');
     const month = `${logDate.getMonth() + 1}`.padStart(2, '0');
     const year = logDate.getFullYear();
 
-    const logFileName = `${filePath}_${day}_${month}_${year}.csv`;
-    const errorLogName = `${errorFilePath}_${day}_${month}_${year}.csv`;
+    const logFileName = `${fileName}_${day}_${month}_${year}.csv`;
 
-    const logMessage = existsSync(logFileName)
-        ? message.split('\n')[1] + '\n'
-        : message;
-
-    await writeLog(logMessage, logFileName, writeError ? errorLogName : null);
-}
-
-async function writeTextLog(message, writeError) {
-    const logFileName = `${filePath}.log`;
-    const errorLogName = `${errorFilePath}.log`;
-
-    await writeLog(message, logFileName, writeError ? errorLogName : null);
-}
-
-async function writeLog(message, fileName, errorFileName) {
-    await appendFile(fileName, message, { flag: 'a+' });
-    if (errorFileName) {
-        await appendFile(errorFileName, message, { flag: 'a+' });
+    if (!existsSync(logFileName)) {
+        writeFileSync(logFileName, `${CSV_HEADERS}\n`);
     }
+
+    return createWriteStream(logFileName, { flags: 'a+', encoding: 'utf8' });
 }
 
-export default { log };
+export default { init };

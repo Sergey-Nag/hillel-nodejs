@@ -25,4 +25,8 @@ export const FORMATTER = {
     CSV: 'CSV',
 };
 
+export const LOG_EVENT_NAME = 'log';
+
 export const DELIMETER = ', ';
+
+export const CSV_HEADERS = 'FileName,Date,Level,Category,Messages';

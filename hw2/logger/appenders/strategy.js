@@ -9,14 +9,14 @@ const appenders = {
     [undefined]: consoleAppender,
 };
 
-function getAppender() {
+function getAppenders() {
     return {
-        log(...args) {
+        init(...args) {
             config.appenders.forEach((a) => {
-                appenders[a].log(...args)
+                appenders[a].init(...args)
             });
         },
     }
 }
 
-export { getAppender };
+export { getAppenders };
