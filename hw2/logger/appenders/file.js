@@ -6,6 +6,7 @@ import { CSV_HEADERS, FORMATTER, LOG_EVENT_NAME } from '../constants.js';
 import CSVMessageTransform from './transformers/CSVMessageTransform.js';
 import FileNameTransform from './transformers/FileNameTransform.js';
 import IsErrorTransform from './transformers/IsErrorTransform.js';
+import { createCloseStream } from './utils.js';
 
 const filePath = './app';
 const errorFilePath = './app_error';
