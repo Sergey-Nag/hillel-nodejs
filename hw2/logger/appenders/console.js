@@ -5,7 +5,7 @@ import FileNameTransform from './transformers/FileNameTransform.js';
 
 
 function init(FormatTransform) {
-    const logStream = new Readable({ encoding: 'utf-8', objectMode: true, read: () => {}});
+    const logStream = new Readable({ objectMode: true, read: () => {}});
 
     logStream
         .pipe(new FileNameTransform())
