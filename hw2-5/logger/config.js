@@ -80,5 +80,5 @@ function initConfig(config) {
 
 const loadedConfig = loadConfig();
 const config = initConfig(loadedConfig);
-console.log('Config:', config);
+
 export default config;
