@@ -1,6 +1,0 @@
-{
-    "logLevel": "trace",
-    "appenders": ["file", "asd"],
-    "delimeter": " ",
-    "formatter": "csv"
-}

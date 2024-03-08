@@ -39,7 +39,7 @@ function init(FormatTransform) {
         logStream.push({ date, level, category, messages }, 'utf8');
     });
 
-    process.on('exit', createCloseStream(logStream));
+    process.on('beforeExit', createCloseStream(logStream));
     process.on('SIGINT', createCloseStream(logStream));
 }
 

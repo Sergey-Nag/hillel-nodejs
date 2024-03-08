@@ -51,22 +51,34 @@ const getDefinedFormatter = (config) => {
         ?? defaultConfig.formatter;
 }
 
+const getServerPort = (config) => {
+    return process.env.LOG_PORT ?? config?.port;
+}
+
+const getServerHost = (config) => {
+    return process.env.LOG_HOSTNAME ?? config?.hostname;
+}
+
 function initConfig(config) {
     const logLevel = getDefinedLevel(config);
     const appenders = getDefinedAppenders(config);
     const delimeter = getDefinedDelimeter(config);
     const formatter = getDefinedFormatter(config);
+    const port = getServerPort(config);
+    const hostname = getServerHost(config);
 
     return {
         logLevel,
         appenders,
         formatter,
         delimeter,
+        port,
+        hostname,
         scoreLevel: SCORE_LEVEL[logLevel],
     };
 }
 
 const loadedConfig = loadConfig();
 const config = initConfig(loadedConfig);
-
+console.log('Config:', config);
 export default config;

@@ -1,6 +1,8 @@
 {
-    "logLevel": "trace",
-    "appenders": ["file", "asd"],
-    "delimeter": " ",
-    "formatter": "csv"
+    "logLevel": "debug",
+    "appenders": ["console","network"],
+    "delimeter": ", ",
+    "formatter": "json",
+    "hostname": "127.0.0.1",
+    "port": 3001
 }
