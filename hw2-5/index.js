@@ -3,6 +3,7 @@ import Logger from './logger/Logger.js';
 const log = new Logger('first');
 
 log.info('info');
+log.info('info 2');
 log.warn('warn', 123, { foo: 'bar', 1: 2});
 
 const log2 = new Logger('second');
