@@ -17,6 +17,7 @@ export const SCORE_LEVEL = {
 export const APPENDER = {
     CONSOLE: 'CONSOLE',
     FILE: 'FILE',
+    NETWORK: 'NETWORK',
 };
 
 export const FORMATTER = {
