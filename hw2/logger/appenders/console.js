@@ -1,27 +1,24 @@
-import { LEVEL } from '../constants.js';
+import { Readable } from 'stream';
+import { logsEmitter } from '../Logger.js';
+import { LOG_EVENT_NAME } from '../constants.js';
+import FileNameTransform from './transformers/FileNameTransform.js';
+import { createCloseStream } from './utils.js';
 
-const RED = '\x1b[31m';
-const YELLOW = '\x1b[33m';
-const GREEN = '\x1b[32m';
-const BLUE = '\x1b[34m';
-const MAGENTA = '\x1b[35m';
-const RESET = '\x1b[0m';
 
-const messageColors = {
-    [LEVEL.INFO]: BLUE,
-    [LEVEL.WARN]: YELLOW,
-    [LEVEL.ERROR]: RED,
-    [LEVEL.DEBUG]: GREEN,
-    [LEVEL.TRACE]: MAGENTA,
-};
+function init(FormatTransform) {
+    const logStream = new Readable({ objectMode: true, read: () => {}});
 
-function log(format, date, level, category, ...messages) {
-    const color = messageColors[level];
+    logStream
+        .pipe(new FileNameTransform())
+        .pipe(new FormatTransform())
+        .pipe(process.stdout)
 
-    console.log(
-        `${color}%s${RESET}`,
-        format(date, level, category, ...messages),
-    );
+    logsEmitter.on(LOG_EVENT_NAME, (date, level, category, ...messages) => {
+        logStream.push({ date, level, category, messages }, 'utf-8');
+    });
+
+    process.on('exit', createCloseStream(logStream));
+    process.on('SIGINT', createCloseStream(logStream));
 }
 
-export default { log };
+export default { init };

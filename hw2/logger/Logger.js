@@ -1,7 +1,10 @@
-import { LEVEL, SCORE_LEVEL } from './constants.js';
+import { LEVEL, SCORE_LEVEL, LOG_EVENT_NAME } from './constants.js';
 import * as appenderStrategy from './appenders/strategy.js';
 import * as formatterStrategy from './formatters/strategy.js';
+import EventEmitter from 'events';
 import config from './config.js';
+
+export const logsEmitter = new EventEmitter();
 
 function Logger(category) {
     this.info = function (...messages) {
@@ -21,12 +24,14 @@ function Logger(category) {
     };
 }
 
-const appender = appenderStrategy.getAppender();
+const appenders = appenderStrategy.getAppenders();
 const formatter = formatterStrategy.getFormatter();
+
+appenders.init(formatter);
 
 function executeLog(level, category, ...messages) {
     if (SCORE_LEVEL[level] <= config.scoreLevel) {
-        appender.log(formatter, Date.now(), level, category, ...messages);
+        logsEmitter.emit(LOG_EVENT_NAME, Date.now(), level, category, ...messages);
     }
 }
 

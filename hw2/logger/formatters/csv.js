@@ -1,19 +1,29 @@
 import config from "../config.js";
+import { CSV_HEADERS } from "../constants.js";
 import { formatDate } from "./utils.js";
+import { Transform } from "stream";
 
-function format(date, level, category, ...messages) {
-    const formattedDate = formatDate(date);
-    const message = messages.map((msg) => {
-        if (msg instanceof Error) {
-            return `Error: ${msg.message}`;
-        } else if (typeof msg === "object") {
-            return JSON.stringify(msg);
-        }
+class CsvFormatTransform extends Transform {
+    constructor() {
+        super({ objectMode: true });
+    }
+    _transform({ date, level, category, messages, fileName }, _e, callback) {
+        const formattedDate = formatDate(date);
+        const message = messages.map((msg) => {
+            if (msg instanceof Error) {
+                return `Error: ${msg.message}`;
+            } else if (typeof msg === "object") {
+                return JSON.stringify(msg);
+            }
 
-        return msg.toString();
-    }).join(config.delimeter);
+            return msg.toString();
+        }).join(config.delimeter);
 
-    return `Date,Level,Category,Messages\n${formattedDate},${level},${category},${message}`;
+        callback(
+            null,
+            `${CSV_HEADERS}\n${fileName},${formattedDate},${level},${category},${message}\n`,
+        );
+    }
 }
 
-export { format };
+export { CsvFormatTransform };

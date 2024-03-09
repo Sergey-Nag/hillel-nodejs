@@ -1,10 +1,19 @@
 import { formatDate, formatMessage } from "./utils.js";
+import { Transform } from "stream";
+class DefaultFormatTransform extends Transform {
+    constructor() {
+        super({ objectMode: true });
+    }
 
-function format(date, level, category, ...messages) {
-    const formattedDate = formatDate(date);
-    const message = formatMessage(...messages);
+    _transform({ date, level, category, messages, fileName }, _e, callback) {
+        const formattedDate = formatDate(date);
+        const message = formatMessage(...messages);
 
-    return `Date: ${formattedDate}, Category: ${category}, Level: ${level}, Message: ${message}`;
+        callback(
+            null,
+            `File Name: ${fileName}, Date: ${formattedDate}, Category: ${category}, Level: ${level}, Message: ${message}\n`
+        );
+    }
 }
 
-export { format };
+export { DefaultFormatTransform };
