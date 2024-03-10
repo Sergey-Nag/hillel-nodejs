@@ -17,7 +17,7 @@ export default class UrlController extends Router {
     create = (req, res) => {
         const { url, name } = req.body;
 
-        const newUrl = this.urlService.create({ url, name, user: req.user });
+        const newUrl = this.urlService.create(url, name, req.user);
 
         res.send(newUrl);
     };

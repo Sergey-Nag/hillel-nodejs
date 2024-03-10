@@ -6,7 +6,7 @@ export default class UrlService {
         this.repository = new UrlRepository();
     }
 
-    create({ url, name: alias, user }) {
+    create(url, alias, user ) {
         const code = generateHash(5);
         const create_time = new Date().toISOString();
         const name = alias ?? new URL(url).hostname;

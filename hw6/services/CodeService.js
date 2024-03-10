@@ -10,7 +10,6 @@ export default class CodeService {
 
         if (url) {
             url.visits++;
-            this.urlRepository.update(code, url);
 
             return url.url;
         }
