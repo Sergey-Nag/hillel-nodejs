@@ -12,7 +12,7 @@ export default class UrlService {
         const name = alias ?? new URL(url).hostname;
         const visits = 0;
 
-        this.repository.create({
+        return this.repository.create({
             url,
             code,
             name,

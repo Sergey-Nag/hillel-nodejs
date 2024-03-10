@@ -9,7 +9,10 @@ export default class Repository {
     create(data, key) {
         data.id = generateHash(8);
 
-        this.data.set(key ?? data.id, new this.model(data));
+        const model = new this.model(data);
+        this.data.set(key ?? data.id, model);
+
+        return model;
     }
 
     update(key, data) {
