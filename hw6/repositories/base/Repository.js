@@ -1,13 +1,15 @@
-import { generateHash } from '../../utils.js';
+import HashService from '../../services/HashService.js';
 
 export default class Repository {
     constructor(model, data) {
         this.model = model;
         this.data = data;
+
+        this.hashService = new HashService();
     }
 
     create(data, key) {
-        data.id = generateHash(8);
+        data.id = this.hashService.generate(8);
 
         const model = new this.model(data);
         this.data.set(key ?? data.id, model);
@@ -21,6 +23,10 @@ export default class Repository {
 
     getByKey(key) {
         return this.data.get(key);
+    }
+
+    get(callback) {
+        return [...this.data.values()].find(callback);
     }
 
     getAll() {

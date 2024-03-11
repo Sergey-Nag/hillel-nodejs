@@ -14,6 +14,6 @@ export default class CodeService {
             return url.url;
         }
 
-        return null;
+        return '';
     }
 }
