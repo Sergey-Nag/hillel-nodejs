@@ -1,11 +1,11 @@
-import express from 'express';
 import cookieParser from 'cookie-parser';
-import UserController from './constollers/UserController.js';
-import UrlController from './constollers/UrlController.js';
-import CodeController from './constollers/CodeController.js';
-import AuthController from './constollers/AuthController.js';
 import session from 'cookie-session';
-import { PORT, baseUrl } from './config.js';
+import express from 'express';
+import { HOST, PORT, SECRET, baseUrl } from './config.js';
+import AuthController from './constollers/AuthController.js';
+import CodeController from './constollers/CodeController.js';
+import UrlController from './constollers/UrlController.js';
+import UserController from './constollers/UserController.js';
 
 const app = express();
 
@@ -14,12 +14,12 @@ app.use(express.json());
 
 app.use(cookieParser());
 app.use(session({
-    secret: 'QwErTy123456',
+    secret: SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
-        domain: 'localhost',
+        domain: HOST,
     }
 }));
 
