@@ -1,3 +1,5 @@
+'use strict';
+
 document.getElementById('createUrl')
     .addEventListener('submit', function (e) {
         e.preventDefault();

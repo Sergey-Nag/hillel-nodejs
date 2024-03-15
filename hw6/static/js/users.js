@@ -1,3 +1,5 @@
+'use strict';
+
 document.getElementById('createUser')
     .addEventListener('submit', function(e) {
         e.preventDefault();
