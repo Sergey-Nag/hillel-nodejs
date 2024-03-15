@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import UrlService from '../services/UrlService.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
+import { baseUrl } from '../config.js';
 
 export default class UrlController extends Router {
     constructor() {
@@ -10,7 +11,8 @@ export default class UrlController extends Router {
 
         this.use(authMiddleware);
 
-        this.get('/', this.getAll);
+        this.get('/', this.getUrlsPage);
+        this.get('/all', this.getAll);
         this.post('/create', this.create);
     }
 
@@ -27,4 +29,10 @@ export default class UrlController extends Router {
 
         res.send(urls);
     };
+
+    getUrlsPage = (req, res) => {
+        const urls = this.urlService.getAll(req.user.id);
+
+        res.render('urls.ejs', { urls, user: req.user, baseUrl: baseUrl });
+    }
 }

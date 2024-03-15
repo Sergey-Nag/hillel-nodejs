@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urls</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+    <%- include('partial/header') %>
+
+    <div class="container">
+        <div>
+            <h1>Create url</h1>
+            <form id="createUrl">
+                <div>
+                    <label for="url">Url</label>
+                    <input type="text" id="url" name="url" required>
+                </div>
+                <div>
+                    <label for="urlName">Name</label>
+                    <input type="text" id="urlName" name="name">
+                </div>
+                <button type="submit">Create</button>
+            </form>
+        </div>
+        <hr>
+        <h1>Urls</h1>
+    </div>
+    <div class="container table-wrapper">
+        <div class="scroll-x">
+            <table class="auto-width">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Url</th>
+                        <th>Short url</th>
+                        <th class="center" width="100">Visits</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (!urls || urls.length === 0) { %>
+                        <tr>
+                            <td class="center" colspan="4">No urls</td>
+                        </tr>
+                    <% } %>
+                    <% for (const url of urls) { %>
+                        <tr>
+                            <td>
+                                <%= url.name %>
+                            </td>
+                            <td>
+                                <a href="<%= url.url %>" target="_blank">
+                                    <%= url.url %>
+                                </a>
+                            </td>
+                            <td class="url-wrapp">
+                                <% const link = `${baseUrl}/code/${url.code}` %>
+                                <a href="<%= link %>" target="_blank">
+                                    <%= link %>
+                                </a>
+                                <span class="copy" data-copy="<%= link %>"
+                                    title="Copy <%= link %> to clipboard ">
+                                </span>
+                            </td>
+                            <td class="center">
+                                <%= url.visits %>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="js/urls.js"></script>
+</body>
+
+</html>

@@ -10,7 +10,7 @@ export default class UrlService {
     create(url, alias, user ) {
         const code = this.hashService.generate(5);
         const create_time = new Date().toISOString();
-        const name = alias ?? new URL(url).hostname;
+        const name = !!alias ? alias : new URL(url).hostname;
         const visits = 0;
 
         return this.repository.create({
@@ -23,7 +23,11 @@ export default class UrlService {
         }, code);
     }
 
-    getAll() {
+    getAll(userId) {
+        if (userId) {
+            return this.repository.filter(u => u.user === userId);
+        }
+
         return this.repository.getAll();
     }
 }

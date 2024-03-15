@@ -3,17 +3,15 @@ import UserService from '../services/UserService.js';
 const userService = new UserService();
 
 const authMiddleware = (req, res, next) => {
-    const [method, creds] = req.headers?.authorization?.split(' ') ?? []
-    
-    if (!method || !creds || method !== 'Basic') {
-        return res.status(401).send('Unauthorized');
+    if (!req.session.userId) {
+        return res.status(401).render('401.ejs');
     }
 
-    const [name, password] = creds.split(':');
-    const user = userService.getByNameAndPassword(name, password);
+    const user = userService.getById(req.session.userId);
 
     if (!user) {
-        return res.status(401).send('Unauthorized');
+        req.session = null;
+        return res.status(401).render('401.ejs');
     }
 
     req.user = user;
