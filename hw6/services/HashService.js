@@ -18,7 +18,7 @@ export default class HashService {
         const generated = this.generatedHashesMap.get(length) ?? new Set();
 
         if (generated.has(hash)) {
-            return this.generateHash(length);
+            return this.generate(length);
         }
 
         generated.add(hash);

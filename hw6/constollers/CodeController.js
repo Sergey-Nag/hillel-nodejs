@@ -15,7 +15,7 @@ export default class CodeController extends Router {
         const url = this.codeService.getRedirectUrl(code);
 
         if (url) {
-            res.redirect(url.url);
+            res.redirect(url);
         } else {
             res.status(404).send('Not found');
         }

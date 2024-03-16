@@ -19,6 +19,10 @@ export default class UserService {
         return this.repository.get(u => u.name === name && u.password === password);
     }
 
+    getById(id) {
+        return this.repository.getByKey(id);
+    }
+
     getAll() {
         return this.repository.getAll();
     }

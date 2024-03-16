@@ -29,6 +29,10 @@ export default class Repository {
         return [...this.data.values()].find(callback);
     }
 
+    filter(callback) {
+        return [...this.data.values()].filter(callback);
+    }
+
     getAll() {
         return [...this.data.values()];
     }
