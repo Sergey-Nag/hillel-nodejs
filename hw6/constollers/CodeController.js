@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import CodeService from '../services/CodeService.js';
+import { createRateLimitMiddleware } from '../middlewares/rateLimitMiddleware.js';
 
 export default class CodeController extends Router {
     constructor() {
@@ -7,7 +8,7 @@ export default class CodeController extends Router {
 
         this.codeService = new CodeService();
 
-        this.get('/:code', this.redirect);
+        this.get('/:code', createRateLimitMiddleware(), this.redirect);
     }
 
     redirect = (req, res) => {
@@ -17,7 +18,7 @@ export default class CodeController extends Router {
         if (url) {
             res.redirect(url);
         } else {
-            res.status(404).send('Not found');
+            res.status(404).render('404.ejs');
         }
     }
 }
