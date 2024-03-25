@@ -1,20 +1,21 @@
+import RedisStore from "connect-redis";
 import cookieParser from 'cookie-parser';
-import session from 'express-session';
-import RedisStore from "connect-redis"
 import express from 'express';
+import session from 'express-session';
+import helmet from 'helmet';
 import { HOST, PORT, SECRET, baseUrl } from './config.js';
 import AuthController from './constollers/AuthController.js';
 import CodeController from './constollers/CodeController.js';
 import UrlController from './constollers/UrlController.js';
 import UserController from './constollers/UserController.js';
-import redisClient from './redisClient.js';
+import redisClient from './db/redisClient.js';
 
 const app = express();
 
 app.use(express.static('static'));
 app.use(express.json());
-
 app.use(cookieParser());
+app.use(helmet());
 
 const redisStore = new RedisStore({
     client: redisClient,

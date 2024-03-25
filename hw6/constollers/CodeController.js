@@ -11,9 +11,9 @@ export default class CodeController extends Router {
         this.get('/:code', createRateLimitMiddleware(), this.redirect);
     }
 
-    redirect = (req, res) => {
+    redirect = async (req, res) => {
         const code = req.params.code;
-        const url = this.codeService.getRedirectUrl(code);
+        const url = await this.codeService.getRedirectUrl(code);
 
         if (url) {
             res.redirect(url);

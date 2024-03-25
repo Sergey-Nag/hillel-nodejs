@@ -1,39 +1,59 @@
 import HashService from '../../services/HashService.js';
+import postgressClient from '../../db/postgressClient.js';
 
 export default class Repository {
-    constructor(model, data) {
+    constructor(model, tableName) {
         this.model = model;
-        this.data = data;
-
+        this.tableName = tableName;
+        this.postgressClient = postgressClient;
         this.hashService = new HashService();
     }
 
-    create(data, key) {
-        data.id = this.hashService.generate(8);
+    async create(data) {
+        const [fields, values] = this.#getFieldsAndValues(data);
 
-        const model = new this.model(data);
-        this.data.set(key ?? data.id, model);
-
-        return model;
+        await this.postgressClient.query(
+            `INSERT INTO ${this.tableName} (${fields}) VALUES (${values.map((_, i) => `$${i + 1}`).join(', ')})`,
+            values
+        );
     }
 
-    update(key, data) {
-        this.data.set(key, data);
+    async updateById(id, where) {
+        const [whereFields, whereValues] = this.#getFieldsAndValues(where);
+
+        await this.postgressClient.query(
+            `UPDATE ${this.tableName} SET ${whereFields.map((field, i) => `${field} = $${i + 1}`).join(', ')} WHERE id = ${id}`,
+            [...whereValues]
+        );
     }
 
-    getByKey(key) {
-        return this.data.get(key);
+    async getByField(field, value) {
+        const result = await this.postgressClient.query(
+            `SELECT * FROM ${this.tableName} WHERE ${field} = $1`,
+            [value]
+        );
+        return result.rows.map(row => new this.model(row));
     }
 
-    get(callback) {
-        return [...this.data.values()].find(callback);
+    // async findWhere({ field, value }) {
+    //     const result = await this.postgressClient.query(
+    //         `SELECT * FROM ${this.tableName} WHERE ${field} = $1`,
+    //         [value]
+    //     );
+    //     return result.rows.map(row => new this.model(row));
+    // }
+
+    async getAll() {
+        const result = await this.postgressClient.query(`SELECT * FROM ${this.tableName}`);
+        return result.rows.map(row => new this.model(row));
     }
 
-    filter(callback) {
-        return [...this.data.values()].filter(callback);
-    }
-
-    getAll() {
-        return [...this.data.values()];
+    #getFieldsAndValues(data) {
+        const entries = Object.entries(data);
+        return entries.reduce((acc, [key, value]) => {
+            acc[0].push(key);
+            acc[1].push(value);
+            return acc;
+        }, [[], []]);
     }
 }

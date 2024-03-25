@@ -16,23 +16,28 @@ export default class UrlController extends Router {
         this.post('/create', this.create);
     }
 
-    create = (req, res) => {
+    create = async (req, res) => {
         const { url, name } = req.body;
 
-        const newUrl = this.urlService.create(url, name, req.user);
+        try {
+            await this.urlService.create(url, name, req.user);
+        } catch (e) {
+            res.status(400).send('Error! Try again');
+            return;
+        }
 
-        res.send(newUrl);
+        res.send('Created!');
     };
 
-    getAll = (req, res) => {
-        const urls = this.urlService.getAll();
+    getAll = async (req, res) => {
+        const urls = await this.urlService.getAll();
 
         res.send(urls);
     };
 
-    getUrlsPage = (req, res) => {
-        const urls = this.urlService.getAll(req.user.id);
+    getUrlsPage = async (req, res) => {
+        const urls = await this.urlService.getAll(req.user.id);
 
         res.render('urls.ejs', { urls, user: req.user, baseUrl: baseUrl });
-    }
+    };
 }

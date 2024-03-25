@@ -18,9 +18,9 @@ export default class AuthController extends Router {
         });
     }
 
-    login = (req, res) => {
+    login = async (req, res) => {
         const { name, password } = req.body;
-        const user = this.userService.getByNameAndPassword(name, password);
+        const user = await this.userService.getByNameAndPassword(name, password);
 
         if (user) {
             req.session.userId = user.id;
