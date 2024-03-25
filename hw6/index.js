@@ -1,4 +1,4 @@
-import RedisStore from "connect-redis";
+import RedisStore from 'connect-redis';
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import session from 'express-session';
@@ -9,6 +9,9 @@ import CodeController from './constollers/CodeController.js';
 import UrlController from './constollers/UrlController.js';
 import UserController from './constollers/UserController.js';
 import redisClient from './db/redisClient.js';
+import Logger from 'my-logger';
+
+const logger = new Logger('index.js');
 
 const app = express();
 
@@ -19,19 +22,21 @@ app.use(helmet());
 
 const redisStore = new RedisStore({
     client: redisClient,
-    prefix: 'session:'
+    prefix: 'session:',
 });
 
-app.use(session({
-    store: redisStore,
-    secret: SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        httpOnly: true,
-        domain: HOST,
-    }
-}));
+app.use(
+    session({
+        store: redisStore,
+        secret: SECRET,
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+            httpOnly: true,
+            domain: HOST,
+        },
+    })
+);
 
 app.set('view engine', 'ejs');
 
@@ -44,5 +49,9 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Server is running on ${baseUrl}`);
+    logger.info(`Server is running on ${baseUrl}`);
+});
+
+process.on('SIGINT', () => {
+    process.exit();
 });

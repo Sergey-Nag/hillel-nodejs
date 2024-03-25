@@ -20,5 +20,5 @@ export default class CodeController extends Router {
         } else {
             res.status(404).render('404.ejs');
         }
-    }
+    };
 }

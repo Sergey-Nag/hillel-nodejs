@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "start:env": "node --env-file=.env index.js"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,7 @@
     "express-session": "^1.18.0",
     "helmet": "^7.1.0",
     "pg": "^8.11.3",
-    "redis": "^4.6.13"
+    "redis": "^4.6.13",
+    "my-logger": "file:../hw2-5"
   }
 }

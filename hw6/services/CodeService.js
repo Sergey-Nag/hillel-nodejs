@@ -4,7 +4,7 @@ export default class CodeService {
     constructor() {
         this.urlRepository = new UrlRepository();
     }
-    
+
     async getRedirectUrl(code) {
         const [url] = await this.urlRepository.getByField('code', code);
 

@@ -2,6 +2,9 @@ import { Router } from 'express';
 import UrlService from '../services/UrlService.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import { baseUrl } from '../config.js';
+import Logger from 'my-logger';
+
+const logger = new Logger('UrlController.js');
 
 export default class UrlController extends Router {
     constructor() {
@@ -22,6 +25,7 @@ export default class UrlController extends Router {
         try {
             await this.urlService.create(url, name, req.user);
         } catch (e) {
+            logger.error(e);
             res.status(400).send('Error! Try again');
             return;
         }

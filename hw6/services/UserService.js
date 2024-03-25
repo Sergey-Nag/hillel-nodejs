@@ -22,7 +22,7 @@ export default class UserService {
         return null;
     }
 
-    async getById( value) {
+    async getById(value) {
         const [user] = await this.repository.getByField('id', value);
         return user;
     }

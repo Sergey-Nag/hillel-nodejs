@@ -12,15 +12,13 @@ export default class UrlService {
         const name = !!alias ? alias : new URL(url).hostname;
         const visits = 0;
 
-        await this.repository.create(
-            {
-                url,
-                code,
-                name,
-                visits,
-                user_id: user.id,
-            },
-        );
+        await this.repository.create({
+            url,
+            code,
+            name,
+            visits,
+            user_id: user.id,
+        });
     }
 
     getAll(userId) {

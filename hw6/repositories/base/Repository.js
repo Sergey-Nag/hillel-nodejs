@@ -13,7 +13,9 @@ export default class Repository {
         const [fields, values] = this.#getFieldsAndValues(data);
 
         await this.postgressClient.query(
-            `INSERT INTO ${this.tableName} (${fields}) VALUES (${values.map((_, i) => `$${i + 1}`).join(', ')})`,
+            `INSERT INTO ${this.tableName} (${fields}) VALUES (${values
+                .map((_, i) => `$${i + 1}`)
+                .join(', ')})`,
             values
         );
     }
@@ -22,7 +24,9 @@ export default class Repository {
         const [whereFields, whereValues] = this.#getFieldsAndValues(where);
 
         await this.postgressClient.query(
-            `UPDATE ${this.tableName} SET ${whereFields.map((field, i) => `${field} = $${i + 1}`).join(', ')} WHERE id = ${id}`,
+            `UPDATE ${this.tableName} SET ${whereFields
+                .map((field, i) => `${field} = $${i + 1}`)
+                .join(', ')} WHERE id = ${id}`,
             [...whereValues]
         );
     }
@@ -32,28 +36,25 @@ export default class Repository {
             `SELECT * FROM ${this.tableName} WHERE ${field} = $1`,
             [value]
         );
-        return result.rows.map(row => new this.model(row));
+        return result.rows.map((row) => new this.model(row));
     }
 
-    // async findWhere({ field, value }) {
-    //     const result = await this.postgressClient.query(
-    //         `SELECT * FROM ${this.tableName} WHERE ${field} = $1`,
-    //         [value]
-    //     );
-    //     return result.rows.map(row => new this.model(row));
-    // }
-
     async getAll() {
-        const result = await this.postgressClient.query(`SELECT * FROM ${this.tableName}`);
-        return result.rows.map(row => new this.model(row));
+        const result = await this.postgressClient.query(
+            `SELECT * FROM ${this.tableName}`
+        );
+        return result.rows.map((row) => new this.model(row));
     }
 
     #getFieldsAndValues(data) {
         const entries = Object.entries(data);
-        return entries.reduce((acc, [key, value]) => {
-            acc[0].push(key);
-            acc[1].push(value);
-            return acc;
-        }, [[], []]);
+        return entries.reduce(
+            (acc, [key, value]) => {
+                acc[0].push(key);
+                acc[1].push(value);
+                return acc;
+            },
+            [[], []]
+        );
     }
 }
