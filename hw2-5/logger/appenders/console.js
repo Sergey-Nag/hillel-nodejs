@@ -1,4 +1,4 @@
-import { Readable } from 'stream';
+import { Readable, Transform } from 'stream';
 import { logsEmitter } from '../Logger.js';
 import { LOG_EVENT_NAME } from '../constants.js';
 import FileNameTransform from './transformers/FileNameTransform.js';
@@ -8,8 +8,15 @@ import { createCloseStream } from './utils.js';
 function init(FormatTransform) {
     const logStream = new Readable({ objectMode: true, read: () => {}});
 
+    let level = 'INFO';
     logStream
         .pipe(new FileNameTransform())
+        .pipe(new Transform({
+            objectMode: true,
+            transform(chunk, _encoding, callback) {
+                callback(null, {...chunk, setColor: true });
+            }
+        }))
         .pipe(new FormatTransform())
         .pipe(process.stdout)
 
