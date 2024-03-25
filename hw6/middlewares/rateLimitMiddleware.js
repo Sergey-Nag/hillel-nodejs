@@ -9,7 +9,7 @@ export function createRateLimitMiddleware() {
         const service = req.session?.userId ? userRateLimitService : codeRateLimitService;
         const key = req.session?.userId ?? req.params.code;
 
-        const isExceed = await service.isKeyExceedLimit(key);
+        const isExceed = await service.isKeyExceedLimit(key.toString());
 
         if (isExceed) {
             const ttl = await service.getTTL(key);
