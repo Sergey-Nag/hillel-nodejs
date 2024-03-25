@@ -8,7 +8,6 @@ import { createCloseStream } from './utils.js';
 function init(FormatTransform) {
     const logStream = new Readable({ objectMode: true, read: () => {}});
 
-    let level = 'INFO';
     logStream
         .pipe(new FileNameTransform())
         .pipe(new Transform({

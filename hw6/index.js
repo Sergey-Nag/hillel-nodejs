@@ -9,8 +9,10 @@ import CodeController from './constollers/CodeController.js';
 import UrlController from './constollers/UrlController.js';
 import UserController from './constollers/UserController.js';
 import redisClient from './db/redisClient.js';
+import Logger from 'my-logger';
 
 const app = express();
+const logger = new Logger('index.js');
 
 app.use(express.static('static'));
 app.use(express.json());
@@ -44,5 +46,9 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Server is running on ${baseUrl}`);
+    logger.info(`Server is running on ${baseUrl}`);
+});
+
+process.on('SIGINT', () => {
+    process.exit();
 });
