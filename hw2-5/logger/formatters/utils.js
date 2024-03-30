@@ -5,6 +5,17 @@ export function formatDate(dateString) {
     return new Date(dateString).toISOString();
 }
 
+const getCircularReplacer = () => {
+    const seen = new WeakSet();
+    return (key, value) => {
+        if (typeof value === 'object' && value !== null) {
+            if (seen.has(value))  return;
+            seen.add(value);
+        }
+        return value;
+    };
+};
+
 export function formatMessage(...messages) {
     return messages
         .map((msg) => {
@@ -12,7 +23,7 @@ export function formatMessage(...messages) {
                 return msg.stack;
             }
 
-            return JSON.stringify(msg);
+            return JSON.stringify(msg, getCircularReplacer())
         })
         .join(config.delimeter);
 }

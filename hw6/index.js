@@ -10,6 +10,7 @@ import UrlController from './constollers/UrlController.js';
 import UserController from './constollers/UserController.js';
 import redisClient from './db/redisClient.js';
 import Logger from 'my-logger';
+import sequelize from './db/sequelize.js';
 
 const logger = new Logger('index.js');
 
@@ -48,8 +49,14 @@ app.get('*', (req, res) => {
     res.status(404).render('404.ejs');
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     logger.info(`Server is running on ${baseUrl}`);
+    try {
+        await sequelize.sync();
+        logger.info('Database is synchronized');
+    } catch(e) {
+        logger.error('Database synchronization error', e);
+    }
 });
 
 process.on('SIGINT', () => {

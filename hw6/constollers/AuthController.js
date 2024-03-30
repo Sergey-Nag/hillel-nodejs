@@ -34,7 +34,7 @@ export default class AuthController extends Router {
     };
 
     logout = (req, res) => {
-        req.session = null;
+        req.session.destroy();
         res.redirect('/login');
     };
 

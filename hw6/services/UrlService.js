@@ -10,13 +10,11 @@ export default class UrlService {
     async create(url, alias, user) {
         const code = this.hashService.generate(5);
         const name = !!alias ? alias : new URL(url).hostname;
-        const visits = 0;
 
         await this.repository.create({
             url,
             code,
             name,
-            visits,
             user_id: user.id,
         });
     }
