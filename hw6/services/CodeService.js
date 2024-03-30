@@ -4,12 +4,12 @@ export default class CodeService {
     constructor() {
         this.urlRepository = new UrlRepository();
     }
-    
-    getRedirectUrl(code) {
-        const url = this.urlRepository.getByKey(code);
+
+    async getRedirectUrl(code) {
+        const [url] = await this.urlRepository.getByField('code', code);
 
         if (url) {
-            url.visits++;
+            await this.urlRepository.updateVisitsByCode(code);
 
             return url.url;
         }

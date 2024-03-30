@@ -5,22 +5,26 @@ export default class UserService {
         this.repository = new UserRepository();
     }
 
-    create(name, password) {
-        const create_time = new Date().toISOString();
-
-        this.repository.create({
+    async create(name, password) {
+        await this.repository.create({
             name,
             password,
-            create_time,
         });
     }
 
-    getByNameAndPassword(name, password) {
-        return this.repository.get(u => u.name === name && u.password === password);
+    async getByNameAndPassword(name, password) {
+        const [user] = await this.repository.getByField('name', name);
+
+        if (user && user.password === password) {
+            return user;
+        }
+
+        return null;
     }
 
-    getById(id) {
-        return this.repository.getByKey(id);
+    async getById(value) {
+        const [user] = await this.repository.getByField('id', value);
+        return user;
     }
 
     getAll() {
