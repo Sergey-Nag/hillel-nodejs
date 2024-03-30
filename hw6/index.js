@@ -49,14 +49,15 @@ app.get('*', (req, res) => {
     res.status(404).render('404.ejs');
 });
 
-app.listen(PORT, async () => {
+try {
+    await sequelize.sync();
+    logger.info('Database is synchronized');
+} catch (e) {
+    logger.error('Database synchronization error', e);
+}
+
+app.listen(PORT, () => {
     logger.info(`Server is running on ${baseUrl}`);
-    try {
-        await sequelize.sync();
-        logger.info('Database is synchronized');
-    } catch(e) {
-        logger.error('Database synchronization error', e);
-    }
 });
 
 process.on('SIGINT', () => {
