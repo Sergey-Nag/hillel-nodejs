@@ -19,4 +19,14 @@ export default class Repository {
     async getAll() {
         return this.model.findAll({ raw: true });
     }
+
+    async isExist(field, value) {
+        const count = await this.model.count({
+            where: {
+                [field]: value,
+            },
+        });
+
+        return count > 0;
+    }
 }
