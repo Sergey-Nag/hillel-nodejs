@@ -1,4 +1,6 @@
+import { ADMIN_PASSWORD } from '../config.js';
 import UserRepository from '../repositories/UserRepository.js';
+import bcrypt from 'bcrypt';
 
 export default class UserService {
     constructor() {
@@ -6,16 +8,20 @@ export default class UserService {
     }
 
     async create(name, password) {
+        const hashedPassword = await bcrypt.hash(password, 10);
+
         await this.repository.create({
             name,
-            password,
+            password: hashedPassword,
         });
     }
 
     async getByNameAndPassword(name, password) {
         const [user] = await this.repository.getByField('name', name);
 
-        if (user && user.password === password) {
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+        if (user && isPasswordCorrect) {
             return user;
         }
 
@@ -29,5 +35,15 @@ export default class UserService {
 
     getAll() {
         return this.repository.getAll();
+    }
+
+    async createAdmin() {
+        const isExist = await this.repository.isExist('name', 'admin');
+
+        if (isExist) {
+            return;
+        }
+
+        await this.create('admin', ADMIN_PASSWORD);
     }
 }
