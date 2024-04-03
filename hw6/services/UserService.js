@@ -19,7 +19,6 @@ export default class UserService {
     async getByNameAndPassword(name, password) {
         const [user] = await this.repository.getByField('name', name);
 
-        
         if (user) {
             const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
