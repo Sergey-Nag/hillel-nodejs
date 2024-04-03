@@ -3,6 +3,6 @@ import Repository from './base/Repository.js';
 
 export default class UserRepository extends Repository {
     constructor() {
-        super(User, 'Users');
+        super(User);
     }
 }
