@@ -16,6 +16,8 @@ export default class AuthController extends Router {
         this.get('/', authMiddleware, (req, res) => {
             res.redirect('/users');
         });
+
+        this.userService.createAdmin();
     }
 
     login = async (req, res) => {

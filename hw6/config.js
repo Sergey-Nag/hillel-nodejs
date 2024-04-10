@@ -24,6 +24,8 @@ const POSTGRESS_CONFIG = {
     port: process.env.POSTGRESS_PORT || 5432,
 };
 
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin';
+
 export {
     PORT,
     HOST,
@@ -34,4 +36,5 @@ export {
     CODE_RATE_LIMIT,
     USER_RATE_LIMIT,
     POSTGRESS_CONFIG,
+    ADMIN_PASSWORD,
 };
