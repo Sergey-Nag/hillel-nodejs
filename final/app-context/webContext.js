@@ -10,6 +10,7 @@ import UrlController from '../constollers/UrlController.js';
 import UserController from '../constollers/UserController.js';
 import redisClient from '../db/redisClient.js';
 import { createCsrfTokenMiddleware } from '../middlewares/csrfTokenMiddleware.js';
+import AdminController from '../constollers/AdminController.js';
 
 const redisStore = new RedisStore({
     client: redisClient,
@@ -38,7 +39,7 @@ function initMiddlewares(app) {
 function initErrorHandling(app) {
     console.log('smth');
     app.use((err, req, res, next) => {
-        console.log(err);
+        console.log('>>', err);
         // if (err) {
         //     res.status(500).send(err.message);
         // }
@@ -58,13 +59,14 @@ function initControllers(app) {
     app.use('/users', new UserController());
     app.use('/urls', new UrlController());
     app.use('/code', new CodeController());
+    app.use('/admin', new AdminController());
     app.use('/', new AuthController());
 }
 
 function initViews(app) {
     app.set('view engine', 'ejs');
     app.get('*', (req, res) => {
-        res.status(404).render('404.ejs');
+        res.status(404).render('error.ejs', { code: 404 });
     });
 }
 

@@ -7,22 +7,23 @@ export default class UserService {
         this.repository = new UserRepository();
     }
 
-    async create({ name, surname, email, password }) {
-        const hashedPassword = await bcrypt.hash(password, 10);
+    async create({ name, surname, email, password, role }) {
+        const hashedPassword = await bcrypt.hash(password.trim(), 10);
 
         return await this.repository.create({
-            name,
-            email,
-            surname,
+            name: name?.trim(),
+            email: email?.trim(),
+            surname: surname?.trim(),
+            role,
             password: hashedPassword,
         });
     }
 
     async getByEmailAndPassword(email, password) {
-        const user = await this.repository.findOne('email', email);
+        const user = await this.repository.findOne('email', email.trim());
         if (user) {
             const isPasswordCorrect = await bcrypt.compare(
-                password,
+                password.trim(),
                 user.password
             );
             if (isPasswordCorrect) {

@@ -1,14 +1,4 @@
-<%
-let _values;
-try {
-    _values = values;
-} catch(e) {
-    _values = {};
-} finally {
-    values = _values;
-}
-
-%>
+<% include('utils/variables-safe') %>
 
 <!DOCTYPE html>
 <html lang="en">

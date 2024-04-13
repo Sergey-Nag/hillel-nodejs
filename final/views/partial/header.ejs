@@ -1,10 +1,13 @@
 <header class="header">
-    <h1>Url shorter</h1>
+    <h2>Url shorter</h2>
     <div class="header-nav">
         <nav class="nav">
             <ul>
                 <li><a href="/users">Users</a></li>
                 <li><a href="/urls">Urls</a></li>
+                <% if (user.role === 'Admin') { %>
+                    <li><a href="/admin">Admin</a></li>
+                <% } %>
             </ul>
         </nav>
         <div class="user-info">

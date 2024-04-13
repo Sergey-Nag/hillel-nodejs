@@ -71,7 +71,7 @@ td.right, th.right {
     text-align: right;
 }
 
-form input, form button[type=submit] {
+form input, form button[type=submit], form select {
     width: 100%;
     padding: 10px;
     margin: 10px 0;

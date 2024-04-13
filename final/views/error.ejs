@@ -1,20 +1,40 @@
 <% 
 let _ttl;
-try { _ttl = ttl }
-catch (e) { _ttl = 0 }
-finally { ttl = _ttl }
+try { 
+    _ttl = ttl
+}
+catch (e) {
+    _ttl = 0
+}
+finally {
+    ttl = _ttl
+}
+let _user;
+try {
+    _user = user
+}
+catch (e) {
+    _user = null
+}
+finally {
+    user = _user
+}
 %>
 <%
     const error = ({
         401: {
             title: 'Unauthorized',
             message: 'You are not authorized to access this page',
-            linksText: '<a href="/login">Login</a> or <a href="signup">Sign up</a>',
+            linksText: user 
+                ? '<a href="/">Go to the main page</a>'
+                : '<a href="/login">Login</a> or <a href="signup">Sign up</a>',
         },
         403: {
             title: 'Forbidden',
             message: 'You are not authorized to access this page',
-            linksText: '<a href="/login">Login</a> or <a href="signup">Sign up</a>',
+            linksText: user 
+                ? '<a href="/">Go to the main page</a>'
+                : '<a href="/login">Login</a> or <a href="signup">Sign up</a>',
         },
         404: {
             title: 'Not Found',

@@ -6,17 +6,7 @@ export default class AuthService {
     }
 
     async registerUser({ name, surname, email, password, confirm_password }) {
-        name = name?.trim();
-        surname = surname?.trim();
-        email = email?.trim();
-        password = password?.trim();
-        confirm_password = confirm_password?.trim();
-
-        const errors = this.#validateSignupFields({ name, email, password, confirm_password });
-
-        if (errors.length) {
-            throw new Error(errors.join('\n'));
-        }
+        this.#validateSignupFields({ name, email, password, confirm_password });
 
         const user = await this.userService.create({
             name,
@@ -32,11 +22,7 @@ export default class AuthService {
         email = email?.trim();
         password = password?.trim();
 
-        const errors = this.#validateLoginFields({ email, password });
-
-        if (errors.length) {
-            throw new Error(errors.join('\n'));
-        }
+        this.#validateLoginFields({ email, password });
 
         const user = await this.userService.getByEmailAndPassword(
             email,
@@ -51,36 +37,20 @@ export default class AuthService {
     }
 
     #validateLoginFields({ email, password }) {
-        const result = [];
-
         if (!email) {
-            result.push('Email is required');
+            throw new Error('Email is required');
         }
 
         if (!password) {
-            result.push('Password is required');
+            throw new Error('Password is required');
         }
-
-        return result;
     }
 
     #validateSignupFields({ email, name, password, confirm_password }) {
-        const result = [];
-
-        if (!name) {
-            result.push('Name is required');
-        }
-
-        if (!email) {
-            result.push('Email is required');
-        }
-
         if (!password) {
-            result.push('Password is required');
+            throw new Error('Password is required');
         } else if (password !== confirm_password) {
-            result.push('Passwords do not match');
+            throw new Error('Passwords do not match');
         }
-
-        return result;
     }
 }

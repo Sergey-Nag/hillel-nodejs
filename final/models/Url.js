@@ -52,11 +52,28 @@ Url.init({
     expire_time: {
         type: DataTypes.DATE,
         allowNull: true,
+        validate: {
+            isAfter: {
+                args: new Date().toISOString(),
+                msg: 'Expire time must be in the future',
+            },
+            validateIfNotPermanent(value) {
+                if (this.type !== 'Permanent' && !value) {
+                    throw new Error('Expire time is required for temporary and one-time URLs');
+                }
+            }
+        }
     },
     type: {
         type: DataTypes.ENUM('Temporary', 'Permanent', 'One-time'),
         defaultValue: 'Permanent',
         allowNull: false,
+        validate: {
+            isIn: {
+                args: [['Temporary', 'Permanent', 'One-time']],
+                msg: 'Invalid type',
+            }
+        }
     },
     user_id: {
         type: DataTypes.INTEGER,

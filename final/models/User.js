@@ -45,6 +45,12 @@ User.init({
         type: DataTypes.ENUM('Admin', 'User'),
         defaultValue: 'User',
         allowNull: false,
+        validate: {
+            isIn: {
+                args: [['Admin', 'User']],
+                msg: 'Invalid role',
+            }
+        }
     },
     create_time: {
         type: DataTypes.DATE,

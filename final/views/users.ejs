@@ -1,3 +1,5 @@
+<% include('utils/variables-safe') %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,64 +7,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Users</title>
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 
 <body>
     <%- include('partial/header') %>
 
     <div class="container">
+        <% if (user.role === 'Admin') { %>
         <div>
             <h1>Create user</h1>
-            <form id="createUser">
-                <div>
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div>
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <button type="submit">Create</button>
-            </form>
+            <a href="/admin">Create user in admin panel</a>
         </div>
-        <hr>
-        <div>
-            <h1>Users</h1>
-            <table>
-                <thead>
-                    <t>
-                        <th width="130">Id</th>
-                        <th>Name</th>
-                        <th class="right">Created</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% if (!users || users.length === 0) { %>
-                        <tr>
-                            <td class="center" colspan="4">No users</td>
+        <% } %>
+        <% if (error) { %>
+            <p class="error-message"><%= error %></p>
+        <% } else { %>
+            <div>
+                <h1>Users</h1>
+                <table>
+                    <thead>
+                        <t>
+                            <th width="130">Id</th>
+                            <th>Name</th>
+                            <th>Surname</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th class="right">Created</th>
                         </tr>
-                    <% } %>
-                    <% for (const user of users) { %>
-                        <tr>
-                            <td>
-                                <%= user.id %>
-                            </td>
-                            <td>
-                                <%= user.name %>
-                            </td>
-                            <td class="right">
-                                <%= new Date(user.create_time).toLocaleString() %>
-                            </td>
-                        </tr>
-                    <% } %>
-                </tbody>
-            </table>
-        </div>
-
+                    </thead>
+                    <tbody>
+                        <% if (!users || users.length === 0) { %>
+                            <tr>
+                                <td class="center" colspan="4">No users</td>
+                            </tr>
+                        <% } %>
+                        <% for (const user of users) { %>
+                            <tr>
+                                <td>
+                                    <%= user.id %>
+                                </td>
+                                <td>
+                                    <%= user.name %>
+                                </td>
+                                <td>
+                                    <%= user.surname %>
+                                </td>
+                                <td>
+                                    <%= user.email %>
+                                </td>
+                                <td>
+                                    <%= user.role %>
+                                </td>
+                                <td class="right">
+                                    <%= new Date(user.create_time).toLocaleString() %>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        <% } %>
     </div>
 
-    <script src="js/users.js"></script>
+    <!-- <script src="js/users.js"></script> -->
 </body>
 
 </html>

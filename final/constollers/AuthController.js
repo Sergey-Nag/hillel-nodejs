@@ -26,8 +26,7 @@ export default class AuthController extends Router {
             const user = await this.authService.loginUser(req.body);
             req.session.userId = user.id;
         } catch (e) {
-            res.status(400);
-            return res.render('login.ejs', {
+            return res.status(400).render('login.ejs', {
                 csrfToken: req.session.csrfToken,
                 error: e.message,
                 values: req.body,
@@ -47,8 +46,7 @@ export default class AuthController extends Router {
             const user = await this.authService.registerUser(req.body);
             req.session.userId = user.id;
         } catch (e) {
-            res.status(400);
-            return res.render('sign-up.ejs', {
+            return res.status(400).render('sign-up.ejs', {
                 csrfToken: req.session.csrfToken,
                 error: e.message,
                 values: req.body,

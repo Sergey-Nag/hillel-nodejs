@@ -3,6 +3,7 @@ import UserService from '../services/UserService.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import { baseUrl } from '../config.js';
 import Logger from 'my-logger';
+import { allowAccessMiddleware } from '../middlewares/allowAccessMiddleware.js';
 
 const logger = new Logger('UserController.js');
 
@@ -16,21 +17,25 @@ export default class UserController extends Router {
 
         this.get('/', this.getUsersPage);
         this.get('/all', this.getAll);
-        this.post('/create', this.create);
+        this.post('/create', allowAccessMiddleware('Admin'), this.create);
     }
 
     create = async (req, res) => {
-        const { name, password } = req.body;
+        const { name, surname, email, password, role } = req.body;
 
         try {
-            await this.userService.create(name, password);
+            await this.userService.create({ name, surname, password, email, role, });
         } catch (e) {
             logger.error(e);
-            res.status(400).send('Error! Try again');
-            return;
+            return res.status(400).render('users.ejs', {
+                error: e.message,
+                user: req.user,
+                baseUrl: baseUrl,
+                values: req.body,
+            });
         }
 
-        res.send('Created!');
+        res.redirect('/users');
     };
 
     getAll = async (req, res) => {
