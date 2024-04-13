@@ -25,6 +25,7 @@ const POSTGRESS_CONFIG = {
 };
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@admin.a';
 
 export {
     PORT,
@@ -37,4 +38,5 @@ export {
     USER_RATE_LIMIT,
     POSTGRESS_CONFIG,
     ADMIN_PASSWORD,
+    ADMIN_EMAIL,
 };

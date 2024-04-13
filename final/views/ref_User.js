@@ -1,12 +1,12 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../db/sequelize.js';
-import bcrypt from 'bcrypt';
 
-export default class User extends Model {
+class User extends Model {
     constructor(data) {
         super(data);
     }
 }
+
 User.init({
     id: {
         type: DataTypes.INTEGER,
@@ -18,32 +18,13 @@ User.init({
     name: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            notEmpty: {
-                msg: 'Name is required',
-            }
-        }
-    },
-    surname: {
-        type: DataTypes.STRING,
     },
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
-        validate: {
-            isEmail: {
-                msg: 'Invalid email format',
-            }
-        }
     },
     password: {
         type: DataTypes.STRING,
-        allowNull: false,
-    },
-    role: {
-        type: DataTypes.ENUM('Admin', 'User'),
-        defaultValue: 'User',
         allowNull: false,
     },
     create_time: {
@@ -54,5 +35,6 @@ User.init({
 }, { 
     sequelize,
     modelName: 'User',
+    tableName: 'users',
     timestamps: false,
 });

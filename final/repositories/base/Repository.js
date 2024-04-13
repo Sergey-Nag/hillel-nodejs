@@ -4,7 +4,8 @@ export default class Repository {
     }
 
     async create(data) {
-        await this.model.create(data);
+        return await this.model.create(data)
+            .then((result) => result.get({ plain: true }));
     }
 
     async getByField(field, value) {
@@ -18,6 +19,15 @@ export default class Repository {
 
     async getAll() {
         return this.model.findAll({ raw: true });
+    }
+
+    async findOne(field, value) {
+        return this.model.findOne({
+            where: {
+                [field]: value,
+            },
+            raw: true,
+        });
     }
 
     async isExist(field, value) {

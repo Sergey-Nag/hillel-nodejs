@@ -125,3 +125,10 @@ form input, form button[type=submit] {
     justify-content: space-between;
     gap: 10px;
 }
+
+.error-message {
+    color: #ff0000;
+    font-weight: bold;
+    background-color: #ffe6e6;
+    padding: 15px;
+}

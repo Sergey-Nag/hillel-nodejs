@@ -13,7 +13,7 @@ export function createRateLimitMiddleware() {
 
         if (isExceed) {
             const ttl = await service.getTTL(key);
-            return res.status(429).render('429.ejs', { ttl });
+            return res.status(429).render('error.ejs', { code: 429, ttl });
         }
 
         await service.incrementKey(key);

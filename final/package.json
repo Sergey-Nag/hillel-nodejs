@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node index.js",
     "start:env": "node --env-file=.env index.js",
-    "dev": "nodemon --env-file=.env index.js"
+    "dev": "nodemon --env-file=.env index.js",
+    "db:migrate": "node --env-file=.env ./db/migrations/migrate.js",
+    "db:seed": "node --env-file=.env ./db/seeders/seed.js"
   },
   "keywords": [],
   "author": "Sergey-Nag",
@@ -28,6 +30,7 @@
     "sequelize": "^6.37.2"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.0",
+    "sequelize-cli": "^6.6.2"
   }
 }

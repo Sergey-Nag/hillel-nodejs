@@ -19,6 +19,12 @@ Url.init({
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        validate: {
+            len: [4, 20],
+            isAlphanumeric: {
+                msg: 'Code must contain only letters and numbers',
+            }
+        }
     },
     name: {
         type: DataTypes.STRING,
@@ -27,6 +33,11 @@ Url.init({
     url: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+            isUrl: {
+                msg: 'Invalid URL format',
+            }
+        }
     },
     visits: {
         type: DataTypes.INTEGER,
@@ -38,13 +49,26 @@ Url.init({
         defaultValue: DataTypes.NOW,
         allowNull: false,
     },
+    expire_time: {
+        type: DataTypes.DATE,
+        allowNull: true,
+    },
+    type: {
+        type: DataTypes.ENUM('Temporary', 'Permanent', 'One-time'),
+        defaultValue: 'Permanent',
+        allowNull: false,
+    },
     user_id: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    enabled: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
         allowNull: false,
     }
 }, { 
     sequelize,
     modelName: 'Url',
-    tableName: 'urls',
     timestamps: false,
 });
