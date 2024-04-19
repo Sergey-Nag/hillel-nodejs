@@ -28,7 +28,7 @@
     </div>
     <div class="container table-wrapper">
         <div class="scroll-x">
-            <table class="auto-width">
+            <table class="auto-width" id="urls">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -48,6 +48,9 @@
                         </tr>
                     <% } %>
                     <% for (const url of urls) { %>
+                        <%
+                            const expired = url.expire_time && new Date(url.expire_time) < new Date();
+                        %>
                         <tr>
                             <td>
                                 <%= url.name %>
@@ -70,10 +73,23 @@
                                 <%= url.type %>
                             </td>
                             <td>
-                                <%= url.expire_time ? new Date(url.expire_time).toLocaleString() : '-' %>
+                                <span
+                                    class="<%= expired ? 'expired' : '' %>"
+                                >
+                                    <%= url.expire_time ? new Date(url.expire_time).toLocaleString() : '-' %>
+                                </span>
                             </td>
                             <td>
-                                <%= url.enabled ? 'Yes' : 'No' %>
+                                <% if (expired) { %>
+                                    <span title="Url is expired">
+                                        No
+                                    </span>
+                                <% } else { %>
+                                <select class="select-enabled w-100" data-id="<%= url.id %>">
+                                    <option value="true" <%= url.enabled ? 'selected' : '' %>>Yes</option>
+                                    <option value="false" <%= !url.enabled ? 'selected' : '' %>>No</option>
+                                </select>
+                                <% } %>
                             </td>
                             <td class="center">
                                 <%= url.visits %>
@@ -87,7 +103,7 @@
             </table>
         </div>
     </div>
-    <script src="js/urls.js"></script>
+    <script src="/js/urls.js"></script>
 </body>
 
 </html>

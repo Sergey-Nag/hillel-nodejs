@@ -52,18 +52,16 @@ export default class AdminController extends Router {
 
     deleteUser = async (req, res) => {
         const { id } = req.params;
-        const user = await this.userService.getById(id, { raw: false });
 
-        if (!user) {
+        try {
+            await this.adminService.deleteUser(id);
+            log.info(`Admin ${req.user.id} has deleted user ${id}`);
+        } catch(e) {
             res.status(404).send('User not found!');
             return;
         }
-        
-        // await this.userService.delete(id, true);
-        await this.userService.delete(id, true);
 
         res.redirect('/admin');
-        log.info(`Admin ${req.user.id} has deleted user ${id}`);
     };
 
     getRateLimitsPage = async (req, res) => {

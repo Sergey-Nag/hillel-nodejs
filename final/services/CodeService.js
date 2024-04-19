@@ -8,12 +8,28 @@ export default class CodeService {
     async getRedirectUrl(code) {
         const [url] = await this.urlRepository.getByField('code', code);
 
-        if (url) {
+        if (this.isRedirectAllowed(url)) {
             await this.urlRepository.updateVisitsByCode(code);
 
             return url.url;
         }
 
         return '';
+    }
+
+    isRedirectAllowed(url) {
+        if (!url) {
+            return false;
+        }
+
+        if (url.type === 'Temporary') {
+            return url.expire_time > new Date();
+        }
+
+        if (url.type === 'One-time') {
+            return url.visits === 0;
+        }
+        
+        return url.enabled;
     }
 }

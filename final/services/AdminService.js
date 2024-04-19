@@ -10,7 +10,13 @@ export default class AdminService {
     }
 
     async createUser({ name, surname, email, password, role }) {
-        return await this.userService.create({ name, surname, email, password, role });
+        return await this.userService.create({
+            name,
+            surname,
+            email,
+            password,
+            role,
+        });
     }
 
     async getRateLimits() {
@@ -21,5 +27,15 @@ export default class AdminService {
             codeRateLimits,
             userRateLimits,
         };
+    }
+
+    async deleteUser(id) {
+        const user = await this.userService.getById(id, { raw: false });
+
+        if (!user) {
+            throw new Error('User not found!');
+        }
+
+        await this.userService.delete(id, true);
     }
 }

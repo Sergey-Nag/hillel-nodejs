@@ -59,6 +59,14 @@ export default class Repository {
         });
     }
 
+    async update(id, data) {
+        return this.model.update(data, {
+            where: {
+                id,
+            },
+        });
+    }
+
     async transaction(callback) {
         return this.model.sequelize.transaction(callback);
     }

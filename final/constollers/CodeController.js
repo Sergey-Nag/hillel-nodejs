@@ -18,7 +18,9 @@ export default class CodeController extends Router {
         if (url) {
             res.redirect(url);
         } else {
-            res.status(404).render('404.ejs');
+            res.status(404).render('error.ejs', {
+                code: 404,
+            });     
         }
     };
 }

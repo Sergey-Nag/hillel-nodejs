@@ -7,10 +7,14 @@ export default class UrlService {
         this.hashService = new HashService();
     }
 
-    async create({url, name, type, expire, length, code: userCode, codeType }, userId ) {
-        const code = codeType === 'random' 
-            ? this.hashService.generate(length || 6)
-            : userCode.trim();
+    async create(
+        { url, name, type, expire, length, code: userCode, codeType },
+        userId
+    ) {
+        const code =
+            codeType === 'random'
+                ? this.hashService.generate(length || 6)
+                : userCode.trim();
 
         await this.repository.create({
             code,
@@ -20,6 +24,27 @@ export default class UrlService {
             type: type.trim(),
             user_id: userId,
             enabled: true,
+        });
+    }
+
+    update(id, data) {
+        return this.repository.transaction(async (t) => {
+            const [url] = await this.repository.getByField('id', id, {
+                transaction: t,
+                raw: false,
+            });
+            console.log('asd', {url});
+            if (url) {
+                if (
+                    data.enabled === 'true' &&
+                    url.dataValues.type === 'One-time' &&
+                    url.dataValues.visits === 1
+                ) {
+                    throw new Error('One-time URL has already been visited');
+                }
+
+                await url.update(data, { transaction: t });
+            }
         });
     }
 
