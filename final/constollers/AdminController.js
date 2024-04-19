@@ -9,7 +9,7 @@ import Logger from 'my-logger';
 const log = new Logger('AdminController.js');
 
 export default class AdminController extends Router {
-    constructor(userService) {
+    constructor() {
         super();
 
         this.adminService = new AdminService();
