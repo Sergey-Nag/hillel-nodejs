@@ -5,6 +5,7 @@ import { PORT, baseUrl } from './config.js';
 import sequelize from './db/sequelize.js';
 import './models/initRelations.js';
 import apiContext from './app-context/apiContext.js';
+import expressWs from 'express-ws';
 
 const logger = new Logger('index.js');
 
@@ -12,8 +13,10 @@ const app = express();
 
 app.use(express.json());
 
+expressWs(app);
 webContext(app);
 apiContext(app);
+// webSocketsContext(app);
 
 try {
     await sequelize.sync();

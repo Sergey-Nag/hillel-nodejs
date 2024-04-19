@@ -63,11 +63,6 @@ export default class UrlController extends Router {
     getUrlsPage = async (req, res) => {
         const urls = await this.urlService.getAll(req.user.id);
 
-        const [user] = await this.userRepo.getByField('id', req.user.id, { raw: false });
-
-        console.log(user);
-        console.log(await user.getUrls({ raw: true }));
-
         res.render('urls.ejs', { urls, user: req.user, baseUrl: baseUrl });
     };
 

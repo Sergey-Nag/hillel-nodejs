@@ -1,10 +1,13 @@
 import UrlRepository from '../repositories/UrlRepository.js';
 import HashService from './HashService.js';
+import LiveUpdateService from './LiveUpdateService.js';
 
 export default class UrlService {
     constructor() {
         this.repository = new UrlRepository();
         this.hashService = new HashService();
+
+        this.eventService = new LiveUpdateService();
     }
 
     async create(
@@ -25,10 +28,12 @@ export default class UrlService {
             user_id: userId,
             enabled: true,
         });
+
+        this.eventService.emitUrlsUpdated();
     }
 
-    update(id, data) {
-        return this.repository.transaction(async (t) => {
+    async update(id, data) {
+        const result = await this.repository.transaction(async (t) => {
             const [url] = await this.repository.getByField('id', id, {
                 transaction: t,
                 raw: false,
@@ -46,6 +51,10 @@ export default class UrlService {
                 await url.update(data, { transaction: t });
             }
         });
+
+        this.eventService.emitUrlsUpdated();
+
+        return result;
     }
 
     getAll(userId) {
@@ -64,7 +73,9 @@ export default class UrlService {
         });
     }
 
-    delete(id) {
-        return this.repository.delete('id', id);
+    async delete(id) {
+        const result = await this.repository.delete('id', id);
+        this.eventService.emitUrlsUpdated();
+        return result;
     }
 }

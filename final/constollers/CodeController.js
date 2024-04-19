@@ -1,12 +1,14 @@
 import { Router } from 'express';
 import CodeService from '../services/CodeService.js';
 import { rateLimitByCodeMiddleware, rateLimitByIpMiddleware, rateLimitByUserMiddleware } from '../middlewares/rateLimitMiddleware.js';
+import LiveUpdateService from '../services/LiveUpdateService.js';
 
 export default class CodeController extends Router {
     constructor() {
         super();
 
         this.codeService = new CodeService();
+        this.liveUpdateService = new LiveUpdateService();
 
         this.get('/:code',
             rateLimitByUserMiddleware(),
@@ -27,5 +29,7 @@ export default class CodeController extends Router {
                 code: 404,
             });     
         }
+
+        this.liveUpdateService.emitUrlsUpdated();
     };
 }

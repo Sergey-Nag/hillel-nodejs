@@ -12,7 +12,7 @@
 
 <head>
     <%- include('partial/head') %>
-        <title>Dashboard</title>
+    <title>Dashboard</title>
 </head>
 
 <body>
@@ -23,13 +23,13 @@
         <div class="dashboard">
             <div class="widget min">
                 <h2>Total urls</h2>
-                <div class="stat-number">
+                <div class="stat-number" id="total-urls">
                     <%= totalUrls %>
                 </div>
             </div>
             <div class="widget min">
                 <h2>Total visits</h2>
-                <div class="stat-number">
+                <div class="stat-number" id="total-visits">
                     <%= totalVisits %>
                 </div>
             </div>
@@ -41,7 +41,7 @@
                         <th>Shorter</th>
                         <th class="center">Visits</th>
                     </thead>
-                    <tbody>
+                    <tbody id="top-user-urls">
                         <% for (const url of topUserUrls) { const link=`${baseUrl}/code/${url.code}`; %>
                             <tr>
                                 <td>
@@ -67,7 +67,7 @@
                         <th>Shorter</th>
                         <th class="center">Visits</th>
                     </thead>
-                    <tbody>
+                    <tbody id="top-all-urls">
                         <% for (const url of topAllUrls) { const link=`${baseUrl}/code/${url.code}`; %>
                             <tr>
                                 <td>
@@ -91,11 +91,11 @@
                         <th>Code</th>
                         <th>Rate limit</th>
                     </thead>
-                    <tbody>
+                    <tbody id="rate-limits">
                         <% for (const rtl of rateLimits) {  %>
                             <tr>
                                 <td>
-                                    <%= rtl.key || '-' %>
+                                    <%= rtl.key %>
                                 </td>
                                 <td>
                                     <%= getTtlTime(rtl.ttl) %>
@@ -107,6 +107,11 @@
             </div>
         </div>
     <% } %>
+
+    <script script-src="self">
+        const baseUrl = '<%= baseUrl %>';
+    </script>
+    <script src="/js/dashboard.js"></script>
 </body>
 
 </html>
