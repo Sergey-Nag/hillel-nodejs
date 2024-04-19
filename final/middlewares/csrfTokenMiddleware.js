@@ -10,7 +10,7 @@ export function createCsrfTokenMiddleware(req, res, next) {
 
 export function verifyCsrfTokenMiddleware(req, res, next) {
     if (req.method === 'POST' && req.body.__csrfToken !== req.session.csrfToken) {
-        return res.status(403).render('error.ejs', { code: 403 });
+        return res.status(403).render('error.ejs', { code: 403, user: req.user });
     }
 
     next();

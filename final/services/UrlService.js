@@ -7,15 +7,19 @@ export default class UrlService {
         this.hashService = new HashService();
     }
 
-    async create(url, alias, user) {
-        const code = this.hashService.generate(5);
-        const name = !!alias ? alias : new URL(url).hostname;
+    async create({url, name, type, expire, length, code: userCode, codeType }, userId ) {
+        const code = codeType === 'random' 
+            ? this.hashService.generate(length || 6)
+            : userCode.trim();
 
         await this.repository.create({
-            url,
             code,
-            name,
-            user_id: user.id,
+            name: name?.trim(),
+            url: url.trim(),
+            expire_time: expire,
+            type: type.trim(),
+            user_id: userId,
+            enabled: true,
         });
     }
 
@@ -25,5 +29,17 @@ export default class UrlService {
         }
 
         return this.repository.getAll();
+    }
+
+    getTop5UserUrls(userId) {
+        return this.repository.getByField('user_id', userId, {
+            order: [['visits', 'DESC']],
+            attributes: ['name', 'code', 'url', 'visits'],
+            limit: 5,
+        });
+    }
+
+    delete(id) {
+        return this.repository.delete('id', id);
     }
 }

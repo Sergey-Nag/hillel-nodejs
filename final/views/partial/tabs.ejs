@@ -1,0 +1,11 @@
+<div class="tabs">
+    <% tabs.forEach((tab, i) => { %>
+        <div class="tab <%= tab.active ? 'active' : '' %>">
+            <% if (tab.active) { %>
+                <h1><%= tab.name %></h1>
+            <% } else { %>
+                <a href="<%= tab.url %>"><h2><%= tab.name %></h2></a>
+            <% } %>
+        </div>
+    <% }) %>
+</div>

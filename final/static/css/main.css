@@ -1,5 +1,8 @@
 :root {
-    --container-width: 700px;
+    --background-color: #fafafa;
+    --container-width: 1000px;
+    --border-color: #c2c2c2;
+    --accent-color: #007bff;
 }
 
 * {
@@ -8,7 +11,7 @@
 
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #fafafa;
+    background-color: var(--background-color);
 }
 
 a {
@@ -17,6 +20,13 @@ a {
 
 a:hover {
     text-decoration: underline;
+}
+
+hr {
+    /* border-color: var(--border-color); */
+    height: 1px;
+    border: 0;
+    border-top: 1px solid var(--border-color);
 }
 
 h1 code {
@@ -32,6 +42,7 @@ h1 code {
     padding: 40px 20px;
     padding-bottom: 0;
 }
+
 .container.table-wrapper {
     max-width: none;
     padding-top: 0;
@@ -45,11 +56,13 @@ table {
     width: 100%;
     border-collapse: collapse;
 }
+
 table.auto-width {
     width: fit-content;
     margin: 0 auto;
     min-width: calc(var(--container-width) - 40px);
 }
+
 th {
     background-color: #f2f2f2;
     border: 1px solid #ddd;
@@ -58,62 +71,94 @@ th {
     font-weight: normal;
     color: #333;
 }
+
 td {
     padding: 10px;
     /* text-align: center; */
 }
 
-td.center, th.center {
+td.center,
+th.center {
     text-align: center;
 }
 
-td.right, th.right {
+td.right,
+th.right {
     text-align: right;
 }
 
-form input, form button[type=submit], form select {
+form input,
+form button[type='submit'],
+form select {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
 }
-
 .header {
+    background-color: #f8f9fa;
+    color: #333;
+    padding: 10px 20px;
+}
+
+.header-nav, .header-title {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
     align-items: center;
 }
-.header-nav {
-    display: flex;
-    gap: 20px;
-    align-items: baseline;
-}
+
 .nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
     display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    gap: 10px
 }
+
 .nav ul li {
-    list-style: none;
+    margin-right: 20px;
 }
+
+.nav ul li:last-child {
+    margin-right: 0;
+}
+
+.nav ul li a {
+    color: #333;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: none;
+}
+.nav ul li a.active {
+    font-weight: bold;
+}
+
+.nav ul li a.active,
+.nav ul li a:hover {
+    background-color: #e9ecef;
+}
+
 .user-info {
     display: flex;
-    flex-direction: column;
-    text-align: right;
+    align-items: center;
+}
+
+.user-info .user-name {
+    margin-right: 10px;
 }
 
 .copy {
     display: inline-block;
     cursor: pointer;
 }
+
 .copy::after {
     content: 'copy';
     padding: 5px;
-    font-size: .9rem;
+    font-size: 0.9rem;
     color: #737373;
     background-color: #f2f2f2;
 }
+
 .copy:hover::after {
     color: #333;
     background-color: #e6e6e6;
@@ -126,9 +171,103 @@ form input, form button[type=submit], form select {
     gap: 10px;
 }
 
-.error-message {
+.error-message,
+.success-message {
     color: #ff0000;
     font-weight: bold;
-    background-color: #ffe6e6;
     padding: 15px;
+}
+.error-message {
+    color: #ff0000;
+    background-color: #ffe6e6;
+}
+.success-message {
+    color: #0f680f;
+    background-color: #bcf5bc;
+}
+
+.tabs {
+    display: flex;
+    gap: 20px;
+    align-items: stretch;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 2rem;
+}
+
+.tab {
+    display: flex;
+    align-items: end;
+    padding: 10px;
+    border: 1px solid transparent;
+    margin-bottom: -1px;
+}
+
+.tab[data-tab-title],
+.tab[data-tab-title] > label {
+    cursor: pointer;
+}
+
+.tab h1,
+.tab h2 {
+    line-height: 1rem;
+    margin-bottom: 0;
+}
+
+.tab.active > * {
+    margin-bottom: 3px;
+}
+
+.tab.active {
+    border-color: var(--border-color);
+    border-bottom-color: var(--background-color);
+}
+
+.tab-content {
+    padding: 10px;
+    margin-top: -1rem;
+}
+.tab-content:not(.active) {
+    display: none;
+}
+
+.hint {
+    color: #737373;
+    font-size: 0.9rem;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 150px 1fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+.widget {
+    flex-grow: 1;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.widget:not(.min) {
+    padding-top: 4px;
+}
+
+.widget.min {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-number {
+    font-size: 2.3rem;
+    font-weight: bold;
+    color: var(--accent-color)
+}
+
+@media (max-width: 1200px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
 }

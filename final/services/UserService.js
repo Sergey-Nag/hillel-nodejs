@@ -1,4 +1,5 @@
 import { ADMIN_PASSWORD } from '../config.js';
+import Url from '../models/Url.js';
 import UserRepository from '../repositories/UserRepository.js';
 import bcrypt from 'bcrypt';
 
@@ -34,8 +35,8 @@ export default class UserService {
         return null;
     }
 
-    async getById(value) {
-        const [user] = await this.repository.getByField('id', value);
+    async getById(value, options) {
+        const [user] = await this.repository.getByField('id', value, options);
         return user;
     }
 
@@ -43,13 +44,19 @@ export default class UserService {
         return this.repository.getAll();
     }
 
-    async createAdmin() {
-        const isExist = await this.repository.isExist('name', 'admin');
-
-        if (isExist) {
-            return;
+    delete(id, withUrls = false) {
+        if (withUrls) {
+            return this.repository.transaction(async (t) => {
+                const [user] = await this.repository.getByField('id', id, {
+                    transaction: t,
+                    include: ['urls'],
+                    raw: false,
+                });
+                await user.urls.forEach((url) => url.destroy({ transaction: t }));
+                await user.destroy({ transaction: t });
+            });
         }
 
-        await this.create('admin', ADMIN_PASSWORD);
+        return this.repository.delete('id', id);
     }
 }

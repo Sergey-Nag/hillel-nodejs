@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import CodeService from '../services/CodeService.js';
-import { createRateLimitMiddleware } from '../middlewares/rateLimitMiddleware.js';
+import { rateLimitByCodeMiddleware, rateLimitByUserMiddleware } from '../middlewares/rateLimitMiddleware.js';
 
 export default class CodeController extends Router {
     constructor() {
@@ -8,7 +8,7 @@ export default class CodeController extends Router {
 
         this.codeService = new CodeService();
 
-        this.get('/:code', createRateLimitMiddleware(), this.redirect);
+        this.get('/:code', rateLimitByUserMiddleware(), rateLimitByCodeMiddleware(), this.redirect);
     }
 
     redirect = async (req, res) => {

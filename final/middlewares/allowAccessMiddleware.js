@@ -4,6 +4,6 @@ export function allowAccessMiddleware(role) {
             return next();
         }
 
-        res.status(403).render('error.ejs', { code: 403 });
+        res.status(403).render('error.ejs', { code: 403, user: req.user });
     }
 }

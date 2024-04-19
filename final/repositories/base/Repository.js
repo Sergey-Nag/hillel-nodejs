@@ -8,17 +8,18 @@ export default class Repository {
             .then((result) => result.get({ plain: true }));
     }
 
-    async getByField(field, value) {
+    async getByField(field, value, options = {}) {
         return this.model.findAll({
             where: {
                 [field]: value,
             },
             raw: true,
+            ...options,
         });
     }
 
-    async getAll() {
-        return this.model.findAll({ raw: true });
+    async getAll(options = {}) {
+        return this.model.findAll({ raw: true, ...options });
     }
 
     async findOne(field, value) {
@@ -38,5 +39,27 @@ export default class Repository {
         });
 
         return count > 0;
+    }
+
+    async count(options) {
+        return this.model.count(options);
+    }
+
+    async sum(field, options) {
+        return this.model.sum(field, options);
+    }
+
+    async delete(field, value, options = {}) {
+        console.log('delete', field, value, options);
+        return this.model.destroy({
+            where: {
+                [field]: value,
+            },
+            ...options,
+        });
+    }
+
+    async transaction(callback) {
+        return this.model.sequelize.transaction(callback);
     }
 }

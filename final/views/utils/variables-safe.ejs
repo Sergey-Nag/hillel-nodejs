@@ -16,4 +16,13 @@
     } finally {
         error = _error;
     }
+
+    let _success;
+    try {
+        _success = success;
+    } catch (e) {
+        _success = null;
+    } finally {
+        success = _success;
+    }
 %>

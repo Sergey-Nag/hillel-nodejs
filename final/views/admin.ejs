@@ -3,14 +3,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('partial/head') %>
     <title>Admin</title>
-    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-    <%- include('partial/header') %>
+    <%- include('partial/header', { page: 'admin' }) %>
+    
     <div class="container">
+        <%- 
+            include('partial/tabs', { tabs: [
+                {
+                    name: 'Users',
+                    url: '/admin',
+                    active: true
+                },
+                {
+                    name: 'Rate limits',
+                    url: '/admin/rate-limits'
+                }
+            ]}) 
+        %>
         <div>
             <h1>Create user</h1>
             <form method="POST" action="admin/create-user">
@@ -23,7 +35,7 @@
                     <input type="text" id="surname" name="surname" value="<%- values.surname ?? '' %>">
                 </div>
                 <div>
-                    <label for="email">Surname</label>
+                    <label for="email">Email</label>
                     <input type="email" id="email" name="email" required value="<%- values.email ?? '' %>">
                 </div>
                 <div>
@@ -37,11 +49,64 @@
                         <option value="Admin">Admin</option>
                     </select>
                 </div>
+                <input type="hidden" name="__csrfToken" value="<%= csrfToken %>">
                 <button type="submit">Create</button>
             </form>
             <% if (error) { %>
                 <p class="error-message"><%= error %></p>
+            <% } else if (success) { %>
+                <p class="success-message"><%= success %></p>
             <% } %>
+        </div>
+        <hr>
+        <div>
+            <h1>All users</h1>
+            <table id="users">
+                <thead>
+                    <tr>
+                        <th width="130">Id</th>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th class="right">Created</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (!users || users.length === 0) { %>
+                        <tr>
+                            <td class="center" colspan="4">No users</td>
+                        </tr>
+                    <% } %>
+                    <% for (const user of users) { %>
+                        <tr>
+                            <td>
+                                <%= user.id %>
+                            </td>
+                            <td>
+                                <%= user.name %>
+                            </td>
+                            <td>
+                                <%= user.surname %>
+                            </td>
+                            <td>
+                                <%= user.email %>
+                            </td>
+                            <td>
+                                <%= user.role %>
+                            </td>
+                            <td class="right">
+                                <%= new Date(user.create_time).toLocaleString() %>
+                            </td>
+                            <td>
+                                <% if (user.role !== 'Admin') {%>
+                                    <a href="/admin/delete-user/<%= user.id %>" class="delete">Delete</a>
+                                <% }%>
+                            </td>
+                        </tr>
+                    <% } %>
+            </table>
         </div>
     </div>
 </body>

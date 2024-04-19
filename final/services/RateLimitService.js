@@ -2,7 +2,7 @@ import redisClient from '../db/redisClient.js';
 
 export default class RateLimitService {
     constructor({ prefix, allowedCalls, secondsGap }) {
-        this.prefix = prefix;
+        this.prefix = `rl:${prefix}`;
         this.allowedCalls = allowedCalls;
         this.secondsGap = secondsGap;
     }
@@ -29,5 +29,11 @@ export default class RateLimitService {
 
     async getTTL(key) {
         return await redisClient.ttl(this.#getKey(key));
+    }
+
+    async getAll() {
+        const keys = await redisClient.keys(`${this.prefix}:*`);
+
+        return keys;
     }
 }

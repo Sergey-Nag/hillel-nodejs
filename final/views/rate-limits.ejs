@@ -1,0 +1,54 @@
+<% include('utils/variables-safe') %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partial/head') %>
+    <title>Admin</title>
+</head>
+<body>
+    <%- include('partial/header', { page: 'admin' }) %>
+    
+    <div class="container">
+        <%- 
+            include('partial/tabs', { tabs: [
+                {
+                    name: 'Users',
+                    url: '/admin',
+                },
+                {
+                    name: 'Rate limits',
+                    url: '/admin/rate-limits',
+                    active: true
+                }
+            ]}) 
+        %>
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="130">Key</th>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (!users || users.length === 0) { %>
+                        <tr>
+                            <td class="center" colspan="4">No users</td>
+                        </tr>
+                    <% } %>
+                    <% for (const rtl of [...codeRateLimits]) { %>
+                        <tr>
+                            <td>
+                                <%= rtl %>
+                            </td>
+                            <td>
+                                <%=  %>
+                            </td>
+                        </tr>
+                    <% } %>
+            </table>
+        </div> -->
+    </div>
+</body>
+</html>

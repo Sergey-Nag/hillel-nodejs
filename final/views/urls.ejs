@@ -4,32 +4,27 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('partial/head') %>
     <title>Urls</title>
-    <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body>
-    <%- include('partial/header') %>
+    <%- include('partial/header', { page: 'urls' }) %>
 
     <div class="container">
-        <div>
-            <h1>Create url</h1>
-            <form id="createUrl">
-                <div>
-                    <label for="url">Url</label>
-                    <input type="text" id="url" name="url" required>
-                </div>
-                <div>
-                    <label for="urlName">Name</label>
-                    <input type="text" id="urlName" name="name">
-                </div>
-                <button type="submit">Create</button>
-            </form>
-        </div>
-        <hr>
-        <h1>Urls</h1>
+        <%- 
+            include('partial/tabs', { tabs: [
+                {
+                    name: 'Urls',
+                    url: '/urls',
+                    active: true
+                },
+                {
+                    name: 'Create url',
+                    url: '/urls/create'
+                }
+            ]}) 
+        %>
     </div>
     <div class="container table-wrapper">
         <div class="scroll-x">
@@ -39,13 +34,17 @@
                         <th>Name</th>
                         <th>Url</th>
                         <th>Short url</th>
+                        <th>Type</th>
+                        <th>Expire</th>
+                        <th>Enabled</th>
                         <th class="center" width="100">Visits</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <% if (!urls || urls.length === 0) { %>
                         <tr>
-                            <td class="center" colspan="4">No urls</td>
+                            <td class="center" colspan="8">No urls</td>
                         </tr>
                     <% } %>
                     <% for (const url of urls) { %>
@@ -67,8 +66,20 @@
                                     title="Copy <%= link %> to clipboard ">
                                 </span>
                             </td>
+                            <td>
+                                <%= url.type %>
+                            </td>
+                            <td>
+                                <%= url.expire_time ? new Date(url.expire_time).toLocaleString() : '-' %>
+                            </td>
+                            <td>
+                                <%= url.enabled ? 'Yes' : 'No' %>
+                            </td>
                             <td class="center">
                                 <%= url.visits %>
+                            </td>
+                            <td>
+                                <a href="/urls/delete/<%= url.id %>">Delete</a>
                             </td>
                         </tr>
                     <% } %>

@@ -11,6 +11,7 @@ import UserController from '../constollers/UserController.js';
 import redisClient from '../db/redisClient.js';
 import { createCsrfTokenMiddleware } from '../middlewares/csrfTokenMiddleware.js';
 import AdminController from '../constollers/AdminController.js';
+import DashboardController from '../constollers/DashboardController.js';
 
 const redisStore = new RedisStore({
     client: redisClient,
@@ -60,13 +61,14 @@ function initControllers(app) {
     app.use('/urls', new UrlController());
     app.use('/code', new CodeController());
     app.use('/admin', new AdminController());
+    app.use('/dashboard', new DashboardController());
     app.use('/', new AuthController());
 }
 
 function initViews(app) {
     app.set('view engine', 'ejs');
     app.get('*', (req, res) => {
-        res.status(404).render('error.ejs', { code: 404 });
+        res.status(404).render('error.ejs', { code: 404, user: req.user });
     });
 }
 
