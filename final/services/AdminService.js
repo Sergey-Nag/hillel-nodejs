@@ -1,12 +1,13 @@
-import { CODE_RATE_LIMIT, USER_RATE_LIMIT } from '../config.js';
+import { CODE_RATE_LIMIT, IP_RATE_LIMIT, USER_RATE_LIMIT } from '../config.js';
 import RateLimitService from './RateLimitService.js';
 import UserService from './UserService.js';
 
 export default class AdminService {
     constructor() {
         this.userService = new UserService();
-        this.codeRateLimitService = new RateLimitService(CODE_RATE_LIMIT);
-        this.userRateLimitService = new RateLimitService(USER_RATE_LIMIT);
+        this.codeRTLService = new RateLimitService(CODE_RATE_LIMIT);
+        this.userRTLService = new RateLimitService(USER_RATE_LIMIT);
+        this.ipRTLService = new RateLimitService(IP_RATE_LIMIT);
     }
 
     async createUser({ name, surname, email, password, role }) {
@@ -20,13 +21,9 @@ export default class AdminService {
     }
 
     async getRateLimits() {
-        const codeRateLimits = await this.codeRateLimitService.getAll();
-        const userRateLimits = await this.userRateLimitService.getAll();
+        const codeRateLimits = await RateLimitService.getAll();
 
-        return {
-            codeRateLimits,
-            userRateLimits,
-        };
+        return codeRateLimits;
     }
 
     async deleteUser(id) {
@@ -37,5 +34,9 @@ export default class AdminService {
         }
 
         await this.userService.delete(id, true);
+    }
+
+    async deleteRtl(id) {
+        await RateLimitService.delete(id);
     }
 }

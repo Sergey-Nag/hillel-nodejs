@@ -35,6 +35,10 @@ export default class UserService {
         return null;
     }
 
+    async update(id, data) {
+        return await this.repository.update(id, data);
+    }
+
     async getById(value, options) {
         const [user] = await this.repository.getByField('id', value, options);
         return user;

@@ -11,21 +11,19 @@
 <body>
     <%- include('partial/header', { page: 'urls' }) %>
 
-    <div class="container">
-        <%- 
-            include('partial/tabs', { tabs: [
-                {
-                    name: 'Urls',
-                    url: '/urls',
-                    active: true
-                },
-                {
-                    name: 'Create url',
-                    url: '/urls/create'
-                }
-            ]}) 
-        %>
-    </div>
+    <%- 
+        include('partial/tabs', { tabs: [
+            {
+                name: 'Urls',
+                url: '/urls',
+                active: true
+            },
+            {
+                name: 'Create url',
+                url: '/urls/create'
+            }
+        ]}) 
+    %>
     <div class="container table-wrapper">
         <div class="scroll-x">
             <table class="auto-width" id="urls">
@@ -49,9 +47,13 @@
                     <% } %>
                     <% for (const url of urls) { %>
                         <%
-                            const expired = url.expire_time && new Date(url.expire_time) < new Date();
+                            const expired = url.type === 'Temporary' 
+                                ? new Date(url.expire_time) < new Date()
+                                : url.type === 'One-time' 
+                                    ? url.visits === 1
+                                    : false;
                         %>
-                        <tr>
+                        <tr class="<%= expired ? 'expired' : '' %>">
                             <td>
                                 <%= url.name %>
                             </td>
@@ -73,11 +75,7 @@
                                 <%= url.type %>
                             </td>
                             <td>
-                                <span
-                                    class="<%= expired ? 'expired' : '' %>"
-                                >
-                                    <%= url.expire_time ? new Date(url.expire_time).toLocaleString() : '-' %>
-                                </span>
+                                <%= url.expire_time ? new Date(url.expire_time).toLocaleString() : '-' %>
                             </td>
                             <td>
                                 <% if (expired) { %>
@@ -95,7 +93,7 @@
                                 <%= url.visits %>
                             </td>
                             <td>
-                                <a href="/urls/delete/<%= url.id %>">Delete</a>
+                                <a href="/urls/delete/<%= url.id %>" class="delete">Delete</a>
                             </td>
                         </tr>
                     <% } %>

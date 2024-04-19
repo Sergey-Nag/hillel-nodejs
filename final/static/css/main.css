@@ -3,6 +3,7 @@
     --container-width: 1000px;
     --border-color: #c2c2c2;
     --accent-color: #007bff;
+    --border-radius: 4px;
 }
 
 * {
@@ -36,20 +37,17 @@ h1 code {
     background-color: #e8e8e8;
 }
 
-.w-100 {
-    width: 100%;
-}
 
 .container {
     max-width: var(--container-width);
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
     padding: 40px 20px;
     padding-bottom: 0;
 }
 
 .container.table-wrapper {
     max-width: none;
-    padding-top: 0;
 }
 
 .scroll-x {
@@ -190,12 +188,19 @@ form select {
     background-color: #bcf5bc;
 }
 
+.tabs-wrapper {
+    border-bottom: 1px solid var(--border-color);
+    /* margin-bottom: 2rem; */
+}
+
 .tabs {
     display: flex;
     gap: 20px;
     align-items: stretch;
+}
+
+.tabs.border {
     border-bottom: 1px solid var(--border-color);
-    margin-bottom: 2rem;
 }
 
 .tab {
@@ -204,6 +209,7 @@ form select {
     padding: 10px;
     border: 1px solid transparent;
     margin-bottom: -1px;
+    border-radius: var(--border-radius);
 }
 
 .tab[data-tab-title],
@@ -249,9 +255,9 @@ form select {
 
 .widget {
     flex-grow: 1;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
     padding: 20px;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
 }
 
 .widget:not(.min) {
@@ -270,13 +276,32 @@ form select {
     color: var(--accent-color)
 }
 
-.expired {
-    color: grey;
-    text-decoration: line-through;
+.expired td:not(:last-child) {
+    opacity: 0.5;
 }
 
 @media (max-width: 1200px) {
     .dashboard {
         grid-template-columns: 1fr;
     }
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.m-0 {
+    margin: 0;
+}
+.mb-0 {
+    margin-bottom: 0;
+}
+.mb-2 {
+    margin-bottom: 2rem;
+}
+.mt-1 {
+    margin-top: 1rem;
+}
+.pt-0 {
+    padding-top: 0;
 }

@@ -19,7 +19,7 @@ Url.init(
             unique: true,
             validate: {
                 is: {
-                    args: [`^[${HASH_CHARACTERS}-_]+$`],
+                    args: [`^[${HASH_CHARACTERS}_\-]+$`],
                     msg: `Code must contain only letters, numbers, hyphens, and underscores without spaces`,
                 },
                 notEmpty: {

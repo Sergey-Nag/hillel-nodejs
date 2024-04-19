@@ -35,8 +35,7 @@ export default class UserApiController extends Router {
             return;
         }
 
-        const usr = await this.userService.delete(user);
-        console.log(usr);
+        await this.userService.delete(user);
         res.send('User deleted!');
     };
 

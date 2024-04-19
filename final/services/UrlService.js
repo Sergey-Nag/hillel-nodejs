@@ -33,7 +33,7 @@ export default class UrlService {
                 transaction: t,
                 raw: false,
             });
-            console.log('asd', {url});
+
             if (url) {
                 if (
                     data.enabled === 'true' &&

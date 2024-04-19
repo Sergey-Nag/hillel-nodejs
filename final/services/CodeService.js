@@ -11,6 +11,10 @@ export default class CodeService {
         if (this.isRedirectAllowed(url)) {
             await this.urlRepository.updateVisitsByCode(code);
 
+            if (url.type === 'One-time') {
+                await this.urlRepository.update(url.id, { enabled: false });
+            }
+
             return url.url;
         }
 
@@ -26,7 +30,7 @@ export default class CodeService {
             return url.expire_time > new Date();
         }
 
-        if (url.type === 'One-time') {
+        if (url.type === 'One-time' && url.enabled) {
             return url.visits === 0;
         }
         

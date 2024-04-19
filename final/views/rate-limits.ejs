@@ -9,46 +9,44 @@
 <body>
     <%- include('partial/header', { page: 'admin' }) %>
     
+    <%- 
+        include('partial/tabs', { tabs: [
+            {
+                name: 'Users',
+                url: '/admin',
+            },
+            {
+                name: 'Rate limits',
+                url: '/admin/rate-limits',
+                active: true
+            }
+        ]}) 
+    %>
     <div class="container">
-        <%- 
-            include('partial/tabs', { tabs: [
-                {
-                    name: 'Users',
-                    url: '/admin',
-                },
-                {
-                    name: 'Rate limits',
-                    url: '/admin/rate-limits',
-                    active: true
-                }
-            ]}) 
-        %>
-        <div>
-            <table>
-                <thead>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rate limit</th>
+                    <th width="100"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (!rtls || rtls.length === 0) { %>
                     <tr>
-                        <th width="130">Key</th>
-                        <th>Name</th>
+                        <td class="center" colspan="4">No Rate limits yet</td>
                     </tr>
-                </thead>
-                <tbody>
-                    <% if (!users || users.length === 0) { %>
-                        <tr>
-                            <td class="center" colspan="4">No users</td>
-                        </tr>
-                    <% } %>
-                    <% for (const rtl of [...codeRateLimits]) { %>
-                        <tr>
-                            <td>
-                                <%= rtl %>
-                            </td>
-                            <td>
-                                <%=  %>
-                            </td>
-                        </tr>
-                    <% } %>
-            </table>
-        </div> -->
+                <% } %>
+                <% for (const rtl of rtls) { %>
+                    <tr>
+                        <td>
+                            <%= rtl %>
+                        </td>
+                        <td>
+                            <a href="/admin/delete-rtl/<%= rtl %>">Delete</a>
+                        </td>
+                    </tr>
+                <% } %>
+        </table>
     </div>
 </body>
 </html>

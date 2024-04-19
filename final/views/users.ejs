@@ -12,12 +12,6 @@
     <%- include('partial/header', { page: 'users' }) %>
 
     <div class="container">
-        <% if (user.role === 'Admin') { %>
-        <div>
-            <h1>Create user</h1>
-            <a href="/admin">Create user in admin panel</a>
-        </div>
-        <% } %>
         <% if (error) { %>
             <p class="error-message"><%= error %></p>
         <% } else { %>

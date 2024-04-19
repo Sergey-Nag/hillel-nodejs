@@ -27,7 +27,6 @@ export default class UrlController extends Router {
             return;
         }
 
-        console.log(req.body);
         try {
             await this.urlService.create(req.body, req.user.id);
         } catch (e) {

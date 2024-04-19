@@ -11,22 +11,21 @@
 <body>
     <%- include('partial/header', { page: 'urls' }) %>
 
+    <%- 
+        include('partial/tabs', { tabs: [
+            {
+                name: 'Urls',
+                url: '/urls',
+                active: false,
+            },
+            {
+                name: 'Create url',
+                url: '/urls/create',
+                active: true,
+            }    
+        ]}) 
+    %>
     <div class="container">
-        <%- 
-            include('partial/tabs', { tabs: [
-                {
-                    name: 'Urls',
-                    url: '/urls',
-                    active: false,
-                },
-                {
-                    name: 'Create url',
-                    url: '/urls/create',
-                    active: true,
-                }    
-            ]}) 
-        %>
-
         <form method="POST" action="/urls/create">
             <div id="name-field">
                 <label for="name">Name</label>
@@ -51,7 +50,7 @@
                 </div>
             <% } %>
             <h3>Code</h3>
-            <div class="tabs">
+            <div class="tabs border mb-2">
                 <div class="tab <%= values.codeType ? values.codeType === 'random' ? 'active' : '' : 'active' %>" data-tab-title="random">
                     <label for="code-random" style="margin: 0">Random</label>
                     <input

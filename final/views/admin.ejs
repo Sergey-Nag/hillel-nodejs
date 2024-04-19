@@ -9,58 +9,25 @@
 <body>
     <%- include('partial/header', { page: 'admin' }) %>
     
+    <%- 
+        include('partial/tabs', { tabs: [
+            {
+                name: 'Users',
+                url: '/admin',
+                active: true
+            },
+            {
+                name: 'Create user',
+                url: '/admin/create-user'
+            },
+            {
+                name: 'Rate limits',
+                url: '/admin/rate-limits'
+            }
+        ]}) 
+    %>
     <div class="container">
-        <%- 
-            include('partial/tabs', { tabs: [
-                {
-                    name: 'Users',
-                    url: '/admin',
-                    active: true
-                },
-                {
-                    name: 'Rate limits',
-                    url: '/admin/rate-limits'
-                }
-            ]}) 
-        %>
         <div>
-            <h1>Create user</h1>
-            <form method="POST" action="admin/create-user">
-                <div>
-                    <label for="name">Name *</label>
-                    <input type="text" id="name" name="name" required value="<%- values.name ?? '' %>">
-                </div>
-                <div>
-                    <label for="surname">Surname</label>
-                    <input type="text" id="surname" name="surname" value="<%- values.surname ?? '' %>">
-                </div>
-                <div>
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required value="<%- values.email ?? '' %>">
-                </div>
-                <div>
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required value="<%- values.password ?? '' %>">
-                </div>
-                <div>
-                    <label for="role">Role</label>
-                    <select name="role" id="role">
-                        <option value="User">User</option>
-                        <option value="Admin">Admin</option>
-                    </select>
-                </div>
-                <input type="hidden" name="__csrfToken" value="<%= csrfToken %>">
-                <button type="submit">Create</button>
-            </form>
-            <% if (error) { %>
-                <p class="error-message"><%= error %></p>
-            <% } else if (success) { %>
-                <p class="success-message"><%= success %></p>
-            <% } %>
-        </div>
-        <hr>
-        <div>
-            <h1>All users</h1>
             <table id="users">
                 <thead>
                     <tr>
@@ -79,29 +46,36 @@
                             <td class="center" colspan="4">No users</td>
                         </tr>
                     <% } %>
-                    <% for (const user of users) { %>
+                    <% for (const usr of users) { %>
                         <tr>
                             <td>
-                                <%= user.id %>
+                                <%= usr.id %>
                             </td>
                             <td>
-                                <%= user.name %>
+                                <%= usr.name %>
                             </td>
                             <td>
-                                <%= user.surname %>
+                                <%= usr.surname %>
                             </td>
                             <td>
-                                <%= user.email %>
+                                <%= usr.email %>
                             </td>
                             <td>
-                                <%= user.role %>
+                                <% if (usr.id !== user.id) {%>
+                                    <select class="role-select w-100" data-id="<%= usr.id %>">
+                                        <option value="User" <%= usr.role === 'User' ? 'selected' : '' %>>User</option>
+                                        <option value="Admin" <%= usr.role === 'Admin' ? 'selected' : '' %>>Admin</option>
+                                    </select>
+                                <% } else { %>
+                                    <%= usr.role %>
+                                <% } %>
                             </td>
                             <td class="right">
-                                <%= new Date(user.create_time).toLocaleString() %>
+                                <%= new Date(usr.create_time).toLocaleString() %>
                             </td>
                             <td>
-                                <% if (user.role !== 'Admin') {%>
-                                    <a href="/admin/delete-user/<%= user.id %>" class="delete">Delete</a>
+                                <% if (usr.id !== user.id) {%>
+                                    <a href="/admin/delete-user/<%= usr.id %>" class="delete">Delete</a>
                                 <% }%>
                             </td>
                         </tr>
@@ -109,5 +83,7 @@
             </table>
         </div>
     </div>
+
+    <script src="/js/admin.js"></script>
 </body>
 </html>

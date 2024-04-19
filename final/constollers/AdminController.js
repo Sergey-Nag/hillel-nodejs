@@ -18,8 +18,10 @@ export default class AdminController extends Router {
         this.use(authMiddleware, allowAccessMiddleware('Admin'));
 
         this.get('/', this.getAdminPage);
+        this.get('/create-user', this.getCreateUserPage);
         this.post('/create-user', verifyCsrfTokenMiddleware, this.createUser);
         this.get('/delete-user/:id', this.deleteUser);
+        this.get('/delete-rtl/:id', this.deleteRtl);
         this.get('/rate-limits', this.getRateLimitsPage);
     }
 
@@ -39,7 +41,7 @@ export default class AdminController extends Router {
         try {
             await this.adminService.createUser({ name, surname, email, password, role });
         } catch (e) {
-            return res.status(400).render('admin.ejs', {
+            return res.status(400).render('admin-create-user.ejs', {
                 error: e.message,
                 user: req.user,
                 values: req.body,
@@ -48,6 +50,13 @@ export default class AdminController extends Router {
         }
 
         res.redirect('/admin');
+    };
+
+    getCreateUserPage = (req, res) => {
+        res.render('admin-create-user.ejs', {
+            user: req.user,
+            csrfToken: req.session.csrfToken,
+        });
     };
 
     deleteUser = async (req, res) => {
@@ -65,10 +74,24 @@ export default class AdminController extends Router {
     };
 
     getRateLimitsPage = async (req, res) => {
-        const data = await this.adminService.getRateLimits();
+        const rtls = await this.adminService.getRateLimits();
         res.render('rate-limits.ejs', {
             user: req.user, users: [],
-            ...data,
+            rtls,
         });
+    };
+
+    deleteRtl = async (req, res) => {
+        const { id } = req.params;
+
+        try {
+            await this.adminService.deleteRtl(id);
+            log.info(`Admin ${req.user.id} has deleted rate limit ${id}`);
+        } catch(e) {
+            res.status(404).send('Rate limit not found!');
+            return;
+        }
+
+        res.redirect('/admin/rate-limits');
     };
 }

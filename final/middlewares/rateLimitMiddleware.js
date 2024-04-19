@@ -1,5 +1,5 @@
 import RateLimitService from '../services/RateLimitService.js';
-import { CODE_RATE_LIMIT, USER_RATE_LIMIT } from '../config.js';
+import { CODE_RATE_LIMIT, USER_RATE_LIMIT, IP_RATE_LIMIT } from '../config.js';
 
 // export function createRateLimitMiddleware() {
 //     const codeRateLimitService = new RateLimitService(CODE_RATE_LIMIT);
@@ -51,6 +51,23 @@ export function rateLimitByUserMiddleware() {
         }
 
         await rateLimitService.incrementKey(req.session.userId);
+
+        next();
+    };
+}
+
+export function rateLimitByIpMiddleware() {
+    const rateLimitService = new RateLimitService(IP_RATE_LIMIT);
+
+    return async (req, res, next) => {
+        const isExceed = await rateLimitService.isKeyExceedLimit(req.ip);
+
+        if (isExceed) {
+            const ttl = await rateLimitService.getTTL(req.ip);
+            return res.status(429).render('error.ejs', { code: 429, ttl, user: req.user });
+        }
+
+        await rateLimitService.incrementKey(req.ip);
 
         next();
     };

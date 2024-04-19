@@ -50,7 +50,6 @@ export default class Repository {
     }
 
     async delete(field, value, options = {}) {
-        console.log('delete', field, value, options);
         return this.model.destroy({
             where: {
                 [field]: value,
