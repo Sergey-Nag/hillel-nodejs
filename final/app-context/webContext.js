@@ -20,9 +20,7 @@ const redisStore = new RedisStore({
 
 function initMiddlewares(app) {
     app.use(cookieParser());
-    app.use(helmet({
-        contentSecurityPolicy: false,
-    }));
+    app.use(helmet());
     app.use(express.urlencoded({ extended: true }));
     app.use(
         session({

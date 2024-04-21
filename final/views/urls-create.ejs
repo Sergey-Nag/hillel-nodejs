@@ -76,8 +76,8 @@
             </div>
             <div id="length-wrapper" class="tab-content <%= values.codeType ? values.codeType === 'random' ? 'active' : '' : 'active' %>" data-tab-content="random">
                 <label for="length">Length</label>
-                <input type="number" id="length" name="length" value="<%= values.length ?? 6 %>" min="3" max="20" placeholder="6">
-                <p class="hint">The length of code for your url</p>
+                <input type="number" id="length" name="length" value="<%= values.length ?? 6 %>" min="4" max="20" placeholder="6">
+                <p class="hint">The length of code for your url. From 4 to 20</p>
             </div>
             <div id="code-wrapper" class="tab-content <%= values.codeType === 'custom' ? 'active' : '' %>" data-tab-content="custom" data-url="<%= baseUrl %>">
                 <label for="code">Code</label>
@@ -89,7 +89,7 @@
                     value="<%= values.code ?? '' %>"
                     <%= values.codeType === 'custom' ? 'required' : '' %>
                 >
-                <p class="hint">Your url will look like this: <span id="code-example-link" data-url="<%= baseUrl %>"><%= baseUrl %>/code/<%= values.code ?? 'code' %></span></p>
+                <p class="hint">You custom code. Supports alphabetical and numerical characters, - and _</p>
             </div>
             <input type="hidden" name="__csrfToken" value="<%= csrfToken %>">
             <button type="submit">Create</button>

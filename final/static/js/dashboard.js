@@ -1,8 +1,9 @@
 'use strict';
 
-const wsProtocol = baseUrl.startsWith('https:') ? 'wss' : 'ws';
+const { host, protocol, origin } = window.location;
+const wsProtocol = protocol === 'https:' ? 'wss' : 'ws';
 
-const ws = new WebSocket(`${wsProtocol}://${baseUrl}/dashboard`);
+const ws = new WebSocket(`${wsProtocol}://${host}/dashboard`);
 const totalUrlElem = document.getElementById('total-urls');
 const totalVisitsElem = document.getElementById('total-visits');
 const topUserUrlsBody = document.getElementById('top-user-urls');
@@ -40,7 +41,7 @@ function fillTopUsersUrlTable(urls) {
     topUserUrlsBody.innerHTML = '';
     urls.forEach((url) => {
         const row = document.createElement('tr');
-        const link=`${baseUrl}/code/${url.code}`;
+        const link=`${origin}/code/${url.code}`;
         row.innerHTML = `
             <td>${url.name}</td>
             <td>
@@ -58,7 +59,7 @@ function fillTopAllUrlsTable(urls) {
     topAllUrlsBody.innerHTML = '';
     urls.forEach((url) => {
         const row = document.createElement('tr');
-        const link=`${baseUrl}/code/${url.code}`;
+        const link=`${origin}/code/${url.code}`;
         row.innerHTML = `
             <td>${url['user.name'] ?? '-'}</td>
             <td>

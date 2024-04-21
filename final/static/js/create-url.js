@@ -16,7 +16,7 @@ const expireTimeInputTemplate = `
 const lengthInputTemplate = `
 <label for="length">Length</label>
 <input type="number" id="length" name="length" value="<%= values.length ?? 6 %>" min="3" max="20" placeholder="6">
-<p class="hint">The length of code for your url</p>
+<p class="hint">The length of code for your url. From 4 to 20</p>
 `;
 
 const codeInputTemplate = `
@@ -28,7 +28,7 @@ const codeInputTemplate = `
     placeholder="code"
     required
 >
-<p class="hint">You custom code</p>
+<p class="hint">You custom code. Supports alphabetical and numerical characters, - and _</p>
 `;
 
 lifetimeInput.addEventListener('change', (e) => {
