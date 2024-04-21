@@ -40,7 +40,6 @@ function initMiddlewares(app) {
 }
 
 function initErrorHandling(app) {
-    console.log('smth');
     app.use((err, req, res, next) => {
         console.log('>>', err);
         // if (err) {

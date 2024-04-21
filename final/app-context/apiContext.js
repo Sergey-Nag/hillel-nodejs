@@ -1,5 +1,4 @@
 import express from 'express';
-import UserApiController from '../constollers/UserApiController.js';
 import ApiController from '../constollers/ApiController.js';
 
 function initMiddlewares(app) {
@@ -7,8 +6,6 @@ function initMiddlewares(app) {
 }
 
 function initControllers(app) {
-    // app.use('/api/users', new UserApiController());
-    // app.use('/api/users', new UserApiController());
     app.use('/api', new ApiController());
 }
 

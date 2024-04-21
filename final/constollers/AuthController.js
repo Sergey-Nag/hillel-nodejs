@@ -17,7 +17,7 @@ export default class AuthController extends Router {
         this.post('/signup', verifyCsrfTokenMiddleware, this.signUp);
 
         this.get('/', authMiddleware, (req, res) => {
-            res.redirect('/users');
+            res.redirect('/dashboard');
         });
     }
 
