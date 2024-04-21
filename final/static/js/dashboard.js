@@ -75,7 +75,7 @@ function fillTopAllUrlsTable(urls) {
 const getTtlTime = (ttl) => {
     if (ttl < 60) return `${ttl} sec`;
     if (ttl < 3600) return `${Math.floor(ttl / 60)} min`;
-    return `${Marg.floor(ttl / 3600)} hours`;
+    return `${Math.floor(ttl / 3600)} hours`;
 }
 function fillRateLimitsTable(rtls) {
     rateLimitsBody.innerHTML = '';
