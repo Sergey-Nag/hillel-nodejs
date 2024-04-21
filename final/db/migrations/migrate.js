@@ -20,8 +20,6 @@ try {
     columns.user_id.references.model = User.getTableName();
 
     await queryInterface.createTable(Url.getTableName(), columns);
-
-    await sequelize.sync();
 } catch (error) {
     console.log(error)
     log.error(error);

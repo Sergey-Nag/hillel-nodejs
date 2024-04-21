@@ -3,7 +3,7 @@ import { POSTGRESS_CONFIG } from '../config.js';
 import Logger from 'my-logger';
 
 const log = new Logger('sequelize.js');
-
+console.log(POSTGRESS_CONFIG);
 const sequelize = new Sequelize({
     dialect: 'postgres',
     username: POSTGRESS_CONFIG.user,
@@ -15,11 +15,11 @@ const sequelize = new Sequelize({
     },
 });
 
-try {
-    await sequelize.authenticate();
-    log.info('Connected to Postgress via Sequelize');
-} catch(e) {
-    log.error(e)
-}
+// try {
+//     await sequelize.authenticate();
+//     log.info('Connected to Postgress via Sequelize');
+// } catch(e) {
+//     log.error(e)
+// }
 
 export default sequelize;
