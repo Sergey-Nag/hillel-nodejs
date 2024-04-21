@@ -18,13 +18,14 @@ apiContext(app);
 try {
     await sequelize.sync();
     logger.info('Database is synchronized');
+
+    app.listen(PORT, () => {
+        logger.info(`Server is running on ${baseUrl}`);
+    });
 } catch (e) {
     logger.error('Database synchronization error', e);
 }
 
-app.listen(PORT, () => {
-    logger.info(`Server is running on ${baseUrl}`);
-});
 
 process.on('SIGINT', () => {
     process.exit();

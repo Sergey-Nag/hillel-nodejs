@@ -99,6 +99,7 @@ Url.init(
     {
         sequelize,
         modelName: 'Url',
+        tableName: 'Urls',
         timestamps: false,
     }
 );

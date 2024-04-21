@@ -1,6 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../db/sequelize.js';
-import bcrypt from 'bcrypt';
 
 export default class User extends Model {}
 
@@ -59,6 +58,7 @@ User.init(
     {
         sequelize,
         modelName: 'User',
+        tableName: 'Users',
         timestamps: false,
     }
 );

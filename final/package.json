@@ -8,7 +8,8 @@
     "start:env": "node --env-file=.env index.js",
     "dev": "nodemon --env-file=.env index.js",
     "db:migrate": "node --env-file=.env ./db/migrations/migrate.js",
-    "db:seed": "node --env-file=.env ./db/seeders/seed.js"
+    "db:seed": "node --env-file=.env ./db/seeders/seed.js",
+    "production": "npm run db:migrate && npm run db:seed && npm run start"
   },
   "keywords": [],
   "author": "Sergey-Nag",

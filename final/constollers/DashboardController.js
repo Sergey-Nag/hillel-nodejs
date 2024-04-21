@@ -40,12 +40,8 @@ export default class DashboardController extends Router {
             this.sendDashboardData(ws, req);
         }
         this.liveDataService.onUrlsUpdated(sendData);
-        ws.on('connection', () => {
-            console.log('Connection opened');
-            this.sendDashboardData(ws, req); 
-        });
+
         ws.on('message', async (message) => {
-            console.log('Received message:', message)
             if (message === 'refresh') {
                 this.sendDashboardData(ws, req);
             }
@@ -60,7 +56,6 @@ export default class DashboardController extends Router {
         });
 
         ws.on('close', () => {
-            console.log('Connection closed');
             this.liveDataService.offUrlsUpdated(sendData);
         });
     }
