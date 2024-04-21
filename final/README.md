@@ -1,8 +1,64 @@
-Sure! Here's a README file for your project:
-
----
-
 # URL Shortener
+
+Demo: [https://url-shortener-w6ks.onrender.com/](https://url-shortener-w6ks.onrender.com/)
+
+The project is placed in the `/final` folder.
+
+## Start the project
+
+### Prerequisites
+- Node.js installed on your machine
+- PostgreSQL database installed and running
+- Redis server installed and running
+
+### Setup
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Sergey-Nag/hillel-nodejs
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd final
+   ```
+
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+4. Set up environment variables:
+
+    [List of the variables](#environment-variables)
+   - Specify them in `.env` file in the root directory.
+   - Or provide them mannualy before a start command execution.
+
+5. Start Redis server:
+   - Ensure Redis is installed on your machine.
+   - Start Redis server using the appropriate command for your system. For example:
+     ```bash
+     redis-server
+     ```
+
+6. Run database migrations:
+   ```bash
+   npm run db:migration
+   ```
+   > run `db:migration:env` to use env variables from the .env file
+7. Run database seed to create an admin:
+    ```bash
+    npm run db:seed
+    ```
+    > run `db:seed:env` to use env variables from the .env file
+7. Start the server:
+   ```bash
+   npm start
+   ```
+   > run `start:env` to use env variables from the .env file
+
+
+### Usage
+- Access the URL shortener application at [http://localhost:3000](http://localhost:3000) in your web browser.
+- Shorten URLs and manage them using the provided interface.
 
 ## Environment Variables
 
