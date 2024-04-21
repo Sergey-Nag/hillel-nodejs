@@ -1,6 +1,8 @@
 'use strict';
 
-const ws = new WebSocket(`ws://${window.location.host}/dashboard`);
+const wsProtocol = baseUrl.startsWith('https:') ? 'wss' : 'ws';
+
+const ws = new WebSocket(`${wsProtocol}://${baseUrl}/dashboard`);
 const totalUrlElem = document.getElementById('total-urls');
 const totalVisitsElem = document.getElementById('total-visits');
 const topUserUrlsBody = document.getElementById('top-user-urls');
