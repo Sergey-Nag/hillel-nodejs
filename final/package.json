@@ -7,8 +7,10 @@
     "start": "node index.js",
     "start:env": "node --env-file=.env index.js",
     "dev": "nodemon --env-file=.env index.js",
-    "db:migrate": "node --env-file=.env ./db/migrations/migrate.js",
-    "db:seed": "node --env-file=.env ./db/seeders/seed.js",
+    "db:migrate": "node ./db/migrations/migrate.js",
+    "db:migrate:env": "node --env-file=.env ./db/migrations/migrate.js",
+    "db:seed": "node ./db/seeders/seed.js",
+    "db:seed:env": "node --env-file=.env ./db/seeders/seed.js",
     "production": "npm run db:migrate && npm run db:seed && npm run start"
   },
   "keywords": [],
