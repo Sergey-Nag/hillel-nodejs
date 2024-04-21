@@ -3,7 +3,7 @@ import { POSTGRESS_CONFIG } from '../config.js';
 import Logger from 'my-logger';
 
 const log = new Logger('sequelize.js');
-console.log(POSTGRESS_CONFIG);
+
 const sequelize = new Sequelize({
     dialect: 'postgres',
     host: POSTGRESS_CONFIG.host,

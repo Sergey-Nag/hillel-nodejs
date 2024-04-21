@@ -32,6 +32,22 @@ const POSTGRESS_CONFIG = {
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin';
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@admin.aa';
 
+console.log({
+    PORT,
+    HOST,
+    PROTOCOL,
+    SECRET,
+    baseUrl,
+    REDIS_URL,
+    CODE_RATE_LIMIT,
+    USER_RATE_LIMIT,
+    IP_RATE_LIMIT,
+    POSTGRESS_CONFIG,
+    ADMIN_PASSWORD,
+    ADMIN_EMAIL,
+
+});
+
 export {
     PORT,
     HOST,
