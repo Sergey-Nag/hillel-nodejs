@@ -1,0 +1,28 @@
+<%
+    let _values;
+    try {
+        _values = values;
+    } catch(e) {
+        _values = {};
+    } finally {
+        values = _values;
+    }
+
+    let _error;
+    try {
+        _error = error;
+    } catch (e) {
+        _error = null;
+    } finally {
+        error = _error;
+    }
+
+    let _success;
+    try {
+        _success = success;
+    } catch (e) {
+        _success = null;
+    } finally {
+        success = _success;
+    }
+%>

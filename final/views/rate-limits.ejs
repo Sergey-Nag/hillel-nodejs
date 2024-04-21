@@ -1,0 +1,56 @@
+<% include('utils/variables-safe') %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partial/head') %>
+    <title>Admin</title>
+</head>
+<body>
+    <%- include('partial/header', { page: 'admin' }) %>
+    
+    <%- 
+        include('partial/tabs', { tabs: [
+            {
+                name: 'Users',
+                url: '/admin',
+            },
+            {
+                name: 'Create user',
+                url: '/admin/create-user',
+            },
+            {
+                name: 'Rate limits',
+                url: '/admin/rate-limits',
+                active: true
+            },
+        ]}) 
+    %>
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Rate limit</th>
+                    <th width="100"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (!rtls || rtls.length === 0) { %>
+                    <tr>
+                        <td class="center" colspan="4">No Rate limits yet</td>
+                    </tr>
+                <% } %>
+                <% for (const rtl of rtls) { %>
+                    <tr>
+                        <td>
+                            <%= rtl %>
+                        </td>
+                        <td>
+                            <a href="/admin/delete-rtl/<%= rtl %>">Delete</a>
+                        </td>
+                    </tr>
+                <% } %>
+        </table>
+    </div>
+</body>
+</html>

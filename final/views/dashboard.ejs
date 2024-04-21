@@ -1,0 +1,114 @@
+<% include('utils/variables-safe') %>
+<%
+    const getTtlTime = (ttl) => {
+        if (ttl < 60) return `${ttl} sec`;
+        if (ttl < 3600) return `${Math.floor(ttl / 60)} min`;
+        return `${Marg.floor(ttl / 3600)} hours`;
+    }
+%>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('partial/head') %>
+    <title>Dashboard</title>
+</head>
+
+<body>
+    <%- include('partial/header', { page: 'dashboard' }) %>
+    <% if (error) {  %>
+        <p class="error-message"><%= error %></p>
+    <% } else { %>
+        <div class="dashboard">
+            <div class="widget min">
+                <h2>Total urls</h2>
+                <div class="stat-number" id="total-urls">
+                    <%= totalUrls %>
+                </div>
+            </div>
+            <div class="widget min">
+                <h2>Total visits</h2>
+                <div class="stat-number" id="total-visits">
+                    <%= totalVisits %>
+                </div>
+            </div>
+            <div class="widget">
+                <h2>TOP 5 urls</h2>
+                <table>
+                    <thead>
+                        <th>Name</th>
+                        <th>Shorter</th>
+                        <th class="center">Visits</th>
+                    </thead>
+                    <tbody id="top-user-urls">
+                        <% for (const url of topUserUrls) { const link=`${baseUrl}/code/${url.code}`; %>
+                            <tr>
+                                <td>
+                                    <%= url.name || '-' %>
+                                </td>
+                                <td><a href="<%= link %>" target="_blank">
+                                        <%= link %>
+                                    </a></td>
+                                <td class="center">
+                                    <%= url.visits %>
+                                </td>
+                            </tr>
+                            <% } %>
+                    </tbody>
+
+                </table>
+            </div>
+            <div class="widget">
+                <h2>TOP 5 urls overall</h2>
+                <table>
+                    <thead>
+                        <th>User</th>
+                        <th>Shorter</th>
+                        <th class="center">Visits</th>
+                    </thead>
+                    <tbody id="top-all-urls">
+                        <% for (const url of topAllUrls) { const link=`${baseUrl}/code/${url.code}`; %>
+                            <tr>
+                                <td>
+                                    <%= url['user.name'] || '-' %>
+                                </td>
+                                <td><a href="<%= link %>" target="_blank">
+                                        <%= link %>
+                                    </a></td>
+                                <td class="center">
+                                    <%= url.visits %>
+                                </td>
+                            </tr>
+                            <% } %>
+                    </tbody>
+                </table>
+            </div>
+            <div class="widget">
+                <h2>Rate limits</h2>
+                <table>
+                    <thead>
+                        <th>Code</th>
+                        <th>Rate limit</th>
+                    </thead>
+                    <tbody id="rate-limits">
+                        <% for (const rtl of rateLimits) {  %>
+                            <tr>
+                                <td>
+                                    <%= rtl.key %>
+                                </td>
+                                <td>
+                                    <%= getTtlTime(rtl.ttl) %>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <% } %>
+
+    <script src="/js/dashboard.js"></script>
+</body>
+
+</html>

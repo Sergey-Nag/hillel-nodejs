@@ -1,0 +1,89 @@
+<% include('utils/variables-safe') %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partial/head') %>
+    <title>Admin</title>
+</head>
+<body>
+    <%- include('partial/header', { page: 'admin' }) %>
+    
+    <%- 
+        include('partial/tabs', { tabs: [
+            {
+                name: 'Users',
+                url: '/admin',
+                active: true
+            },
+            {
+                name: 'Create user',
+                url: '/admin/create-user'
+            },
+            {
+                name: 'Rate limits',
+                url: '/admin/rate-limits'
+            }
+        ]}) 
+    %>
+    <div class="container">
+        <div>
+            <table id="users">
+                <thead>
+                    <tr>
+                        <th width="130">Id</th>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th class="right">Created</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (!users || users.length === 0) { %>
+                        <tr>
+                            <td class="center" colspan="4">No users</td>
+                        </tr>
+                    <% } %>
+                    <% for (const usr of users) { %>
+                        <tr>
+                            <td>
+                                <%= usr.id %>
+                            </td>
+                            <td>
+                                <%= usr.name %>
+                            </td>
+                            <td>
+                                <%= usr.surname %>
+                            </td>
+                            <td>
+                                <%= usr.email %>
+                            </td>
+                            <td>
+                                <% if (usr.id !== user.id) {%>
+                                    <select class="role-select w-100" data-id="<%= usr.id %>">
+                                        <option value="User" <%= usr.role === 'User' ? 'selected' : '' %>>User</option>
+                                        <option value="Admin" <%= usr.role === 'Admin' ? 'selected' : '' %>>Admin</option>
+                                    </select>
+                                <% } else { %>
+                                    <%= usr.role %>
+                                <% } %>
+                            </td>
+                            <td class="right">
+                                <%= new Date(usr.create_time).toLocaleString() %>
+                            </td>
+                            <td>
+                                <% if (usr.id !== user.id) {%>
+                                    <a href="/admin/delete-user/<%= usr.id %>" class="delete">Delete</a>
+                                <% }%>
+                            </td>
+                        </tr>
+                    <% } %>
+            </table>
+        </div>
+    </div>
+
+    <script src="/js/admin.js"></script>
+</body>
+</html>
