@@ -6,6 +6,7 @@ const log = new Logger('sequelize.js');
 console.log(POSTGRESS_CONFIG);
 const sequelize = new Sequelize({
     dialect: 'postgres',
+    host: POSTGRESS_CONFIG.host,
     username: POSTGRESS_CONFIG.user,
     password: POSTGRESS_CONFIG.password,
     database: POSTGRESS_CONFIG.database,
