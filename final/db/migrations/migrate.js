@@ -11,17 +11,12 @@ try {
     await queryInterface.dropTable(User.getTableName(), { cascade: true });
     await queryInterface.dropTable(Url.getTableName(), { cascade: true });
 
-    await import('../../models/initRelations.js');
-
-
     await queryInterface.createTable(User.getTableName(), User.getAttributes());
-    
+
     const columns = Url.getAttributes();
     columns.user_id.references.model = User.getTableName();
 
     await queryInterface.createTable(Url.getTableName(), columns);
 } catch (error) {
-    console.log(error)
     log.error(error);
-    
 }

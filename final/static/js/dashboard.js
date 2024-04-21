@@ -8,13 +8,11 @@ const topAllUrlsBody = document.getElementById('top-all-urls');
 const rateLimitsBody = document.getElementById('rate-limits');
 
 ws.onopen = () => {
-    console.log('Connected to websockets');
     ws.send('refresh');
 };
 
 ws.onmessage = (message) => {
     const data = JSON.parse(message.data);
-    console.log('Data received', message);
     if (data.error) {
         console.error(data.error);
         return;

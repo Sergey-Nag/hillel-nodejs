@@ -19,7 +19,9 @@ const IP_RATE_LIMIT = {
     secondsGap: +process.env.IP_RATE_LIMIT_SECONDS_GAP || 24 * 60 * 60,
 };
 
-const baseUrl = `${PROTOCOL}://${HOST}:${PORT}`;
+const baseUrl = HOST === '127.0.0.1' 
+    ? `${PROTOCOL}://${HOST}:${PORT}`
+    : `${PROTOCOL}://${HOST}`;
 
 const POSTGRESS_CONFIG = {
     user: process.env.POSTGRESS_USER || 'postgres',
@@ -31,22 +33,6 @@ const POSTGRESS_CONFIG = {
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin';
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@admin.aa';
-
-console.log({
-    PORT,
-    HOST,
-    PROTOCOL,
-    SECRET,
-    baseUrl,
-    REDIS_URL,
-    CODE_RATE_LIMIT,
-    USER_RATE_LIMIT,
-    IP_RATE_LIMIT,
-    POSTGRESS_CONFIG,
-    ADMIN_PASSWORD,
-    ADMIN_EMAIL,
-
-});
 
 export {
     PORT,
