@@ -1,0 +1,105 @@
+<% include('utils/variables-safe') %>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('partial/head') %>
+    <title>Create url</title>
+</head>
+
+<body>
+    <%- include('partial/header', { page: 'urls' }) %>
+
+    <%- 
+        include('partial/tabs', { tabs: [
+            {
+                name: 'Urls',
+                url: '/urls',
+                active: false,
+            },
+            {
+                name: 'Create url',
+                url: '/urls/create',
+                active: true,
+            }    
+        ]}) 
+    %>
+    <div class="container">
+        <form method="POST" action="/urls/create">
+            <div id="name-field">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Google" value="<%= values.name ?? '' %>">
+            </div>
+            <div id="url-field">
+                <label for="url">Url</label>
+                <input type="text" id="url" name="url" required placeholder="https://google.com" value="<%= values.url ?? '' %>">
+            </div>
+            <div id="lifetime-field">
+                <label for="type">Lifetime</label>
+                <select name="type" id="type">
+                    <option value="Permanent" <%= values.type === 'Permanent' ? 'selected' : '' %>>Permanent</option>
+                    <option value="Temporary" <%= values.type === 'Temporary' ? 'selected' : '' %>>Temporary</option>
+                    <option value="One-time" <%= values.type === 'One-time' ? 'selected' : '' %>>One-time</option>
+                </select>
+            </div>
+            <% if (values.type === 'Temporary') { %>
+                <div id="expire-field">
+                    <label for="expire">Expire time</label>
+                    <input type="datetime-local" id="expire" name="expire" class="form-control" required value="<%= values.expire ?? '' %>">
+                </div>
+            <% } %>
+            <h3>Code</h3>
+            <div class="tabs border mb-2">
+                <div class="tab <%= values.codeType ? values.codeType === 'random' ? 'active' : '' : 'active' %>" data-tab-title="random">
+                    <label for="code-random" style="margin: 0">Random</label>
+                    <input
+                        hidden
+                        type="radio"
+                        id="code-random"
+                        name="codeType"
+                        value="random"
+                        <%= values.codeType ? values.codeType === 'random' ? 'checked' : '' : 'checked' %>
+                >
+                </div>
+                <div class="tab <%= values.codeType === 'custom' ? 'active' : '' %>" data-tab-title="custom">
+                    <label for="code-custom" style="margin: 0">Custom</label>
+                    <input
+                        hidden
+                        type="radio"
+                        id="code-custom"
+                        name="codeType"
+                        value="custom"
+                        <%= values.codeType === 'custom' ? 'checked' : '' %>
+                    >
+                </div>
+            </div>
+            <div id="length-wrapper" class="tab-content <%= values.codeType ? values.codeType === 'random' ? 'active' : '' : 'active' %>" data-tab-content="random">
+                <label for="length">Length</label>
+                <input type="number" id="length" name="length" value="<%= values.length ?? 6 %>" min="4" max="20" placeholder="6">
+                <p class="hint">The length of code for your url. From 4 to 20</p>
+            </div>
+            <div id="code-wrapper" class="tab-content <%= values.codeType === 'custom' ? 'active' : '' %>" data-tab-content="custom" data-url="<%= baseUrl %>">
+                <label for="code">Code</label>
+                <input
+                    type="text"
+                    id="code"
+                    name="code"
+                    placeholder="code"
+                    value="<%= values.code ?? '' %>"
+                    <%= values.codeType === 'custom' ? 'required' : '' %>
+                >
+                <p class="hint">You custom code. Supports alphabetical and numerical characters, - and _</p>
+            </div>
+            <input type="hidden" name="__csrfToken" value="<%= csrfToken %>">
+            <button type="submit">Create</button>
+        </form>
+        <% if (error) { %>
+            <p class="error-message"><%= error %></p>
+        <% } %>
+    </div>
+
+    <script src="/js/tabs.js"></script>
+    <script src="/js/create-url.js"></script>
+</body>
+</html>

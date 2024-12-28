@@ -1,0 +1,27 @@
+<%
+    function getActiveClass(link) {
+        return page === link ? 'active' : '';
+    }
+%>
+
+<header class="header">
+    <div class="header-title">
+        <h2>Url Shortener</h2>
+        <div class="user-info">
+            <span class="user-name">User: <b><%= user.name + ' ' + (user.surname ?? '') %></b></span>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+    <div class="header-nav">
+        <nav class="nav">
+            <ul>
+                <li><a href="/dashboard" class="<%- getActiveClass('dashboard') %>">Dashboard</a></li>
+                <li><a href="/users" class="<%- getActiveClass('users') %>">Users</a></li>
+                <li><a href="/urls" class="<%- getActiveClass('urls') %>">Urls</a></li>
+                <% if (user.role === 'Admin') { %>
+                    <li><a href="/admin" class="<%- getActiveClass('admin') %>">Admin</a></li>
+                <% } %>
+            </ul>
+        </nav>
+    </div>
+</header>
