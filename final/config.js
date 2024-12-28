@@ -3,6 +3,7 @@ const HOST = process.env.HOST || '127.0.0.1';
 const PROTOCOL = process.env.PROTOCOL || 'http';
 const SECRET = process.env.SECRET || 'QwErTy123456';
 const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
+const MONGO_URL = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster-url-shortener.5zfty.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-url-shortener`;
 const CODE_RATE_LIMIT = {
     prefix: process.env.CODE_RATE_LIMIT_PREFIX || 'code',
     allowedCalls: +process.env.CODE_RATE_LIMIT_ALLOWED_CALLS || 100,
@@ -47,4 +48,5 @@ export {
     POSTGRESS_CONFIG,
     ADMIN_PASSWORD,
     ADMIN_EMAIL,
+    MONGO_URL,
 };

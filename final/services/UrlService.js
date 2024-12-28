@@ -33,24 +33,43 @@ export default class UrlService {
     }
 
     async update(id, data) {
-        const result = await this.repository.transaction(async (t) => {
-            const [url] = await this.repository.getByField('id', id, {
-                transaction: t,
-                raw: false,
+        let result;
+        if (process.env.DATABASE_PROVIDER === 'POSTGRESS') {
+            result = await this.repository.transaction(async (t) => {
+                const [url] = await this.repository.getByField('id', id, {
+                    transaction: t,
+                    raw: false,
+                });
+
+                if (url) {
+                    if (
+                        data.enabled === 'true' &&
+                        url.dataValues.type === 'One-time' &&
+                        url.dataValues.visits === 1
+                    ) {
+                        throw new Error(
+                            'One-time URL has already been visited'
+                        );
+                    }
+
+                    await url.update(data, { transaction: t });
+                }
             });
+        } else {
+            const [url] = await this.repository.getByField('id', id);
 
             if (url) {
                 if (
                     data.enabled === 'true' &&
-                    url.dataValues.type === 'One-time' &&
-                    url.dataValues.visits === 1
+                    url.type === 'One-time' &&
+                    url.visits === 1
                 ) {
                     throw new Error('One-time URL has already been visited');
                 }
 
-                await url.update(data, { transaction: t });
+                result = await this.repository.update(id, data);
             }
-        });
+        }
 
         this.eventService.emitUrlsUpdated();
 

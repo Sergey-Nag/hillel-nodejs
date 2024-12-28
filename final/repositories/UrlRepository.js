@@ -1,7 +1,9 @@
-import Url from '../models/Url.js';
+import Url from '../models/sequelize/Url.js';
+import UrlMongo from '../models/mongoose/Url.js';
 import Repository from './base/Repository.js';
+import RepositoryMongo from './base/RepositoryMongo.js';
 
-export default class UrlRepository extends Repository {
+class UrlRepository extends Repository {
     constructor() {
         super(Url);
     }
@@ -12,3 +14,17 @@ export default class UrlRepository extends Repository {
         });
     }
 }
+
+class UrlRepositoryMongo extends RepositoryMongo {
+    constructor() {
+        super(UrlMongo);
+    }
+
+    async updateVisitsByCode(code) {
+        await this.model.updateOne({ code }, { $inc: { visits: 1 } });
+    }
+}
+
+const dbProvider = process.env.DATABASE_PROVIDER || 'POSTGRESS';
+
+export default dbProvider === 'MONGO' ? UrlRepositoryMongo : UrlRepository;

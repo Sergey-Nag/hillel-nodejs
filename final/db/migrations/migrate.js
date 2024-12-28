@@ -1,6 +1,6 @@
 import sequelize from '../sequelize.js';
-import User from '../../models/User.js';
-import Url from '../../models/Url.js';
+import User from '../../models/sequelize/User.js';
+import Url from '../../models/sequelize/Url.js';
 import Logger from 'my-logger';
 
 const log = new Logger('migrate.js');
