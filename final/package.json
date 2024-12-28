@@ -28,7 +28,6 @@
     "express-ws": "^5.0.2",
     "helmet": "^7.1.0",
     "mongoose": "^8.9.2",
-    "mongoose-id-autoincrement": "^1.0.5",
     "my-logger": "file:../hw2-5",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
