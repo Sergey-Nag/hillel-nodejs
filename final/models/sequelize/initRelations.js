@@ -1,5 +1,5 @@
-import Url from './Url.js';
-import User from './User.js';
+import Url from '../Url.js';
+import User from '../User.js';
 
 Url.belongsTo(User, {
     foreignKey: 'user_id',

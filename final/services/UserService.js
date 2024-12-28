@@ -1,5 +1,5 @@
 import { ADMIN_PASSWORD } from '../config.js';
-import Url from '../models/Url.js';
+import Url from '../models/sequelize/Url.js';
 import UserRepository from '../repositories/UserRepository.js';
 import bcrypt from 'bcrypt';
 

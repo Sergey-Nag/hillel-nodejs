@@ -1,5 +1,5 @@
 import UrlRepository from '../repositories/UrlRepository.js';
-import User from '../models/User.js';
+import User from '../models/sequelize/User.js';
 import UrlService from './UrlService.js';
 import UserService from './UserService.js';
 import RateLimitService from './RateLimitService.js';

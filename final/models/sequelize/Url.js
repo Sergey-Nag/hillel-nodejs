@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
-import sequelize from '../db/sequelize.js';
-import { HASH_CHARACTERS } from '../utils.js';
+import sequelize from '../../db/sequelize.js';
+import { HASH_CHARACTERS } from '../../utils.js';
 
 export default class Url extends Model {}
 

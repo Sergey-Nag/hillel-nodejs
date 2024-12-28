@@ -1,5 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
-import sequelize from '../db/sequelize.js';
+import sequelize from '../../db/sequelize.js';
 
 export default class User extends Model {}
 
