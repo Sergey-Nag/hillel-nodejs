@@ -25,6 +25,7 @@
                             <th>Surname</th>
                             <th>Email</th>
                             <th>Role</th>
+                            <th>Auth by</th>
                             <th class="right">Created</th>
                         </tr>
                     </thead>
@@ -50,6 +51,15 @@
                                 </td>
                                 <td>
                                     <%= user.role %>
+                                </td>
+                                <td class="center">
+                                    <% if (user.oauthProvider === 'github') { %>
+                                        <%- include('partial/github-icon') %>
+                                    <% } else if (user.oauthProvider === 'google') { %>
+                                        <%- include('partial/google-icon') %>
+                                    <% } else { %>
+                                        -
+                                    <% } %>
                                 </td>
                                 <td class="right">
                                     <%= new Date(user.create_time).toLocaleString() %>
