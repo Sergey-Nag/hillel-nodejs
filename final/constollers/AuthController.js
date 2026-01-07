@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import passport from '../oAuth/passport.js';
+import { GOOGLE_CLIENT_ID, GITHUB_CLIENT_ID } from '../config.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import { verifyCsrfTokenMiddleware } from '../middlewares/csrfTokenMiddleware.js';
 import AuthService from '../services/AuthService.js';
@@ -16,10 +18,33 @@ export default class AuthController extends Router {
         this.post('/login', verifyCsrfTokenMiddleware, this.login);
         this.post('/signup', verifyCsrfTokenMiddleware, this.signUp);
 
+        if (GOOGLE_CLIENT_ID) {
+            this.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+            this.get('/auth/google/callback', 
+                passport.authenticate('google', { failureRedirect: '/login' }),
+                this.oauthCallback
+            );
+        }
+
+        if (GITHUB_CLIENT_ID) {
+            this.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
+            this.get('/auth/github/callback',
+                passport.authenticate('github', { failureRedirect: '/login' }),
+                this.oauthCallback
+            );
+        }
+
         this.get('/', authMiddleware, (req, res) => {
             res.redirect('/dashboard');
         });
     }
+
+    oauthCallback = (req, res) => {
+        if (req.user) {
+            req.session.userId = req.user.id;
+        }
+        res.redirect('/dashboard');
+    };
 
     login = async (req, res) => {
         try {
@@ -68,18 +93,5 @@ export default class AuthController extends Router {
             csrfToken: req.session.csrfToken,
             error: null,
         });
-    };
-
-    #signUpErrorHandler = async (req, res, next) => {
-        try {
-            await next();
-        } catch (e) {
-            res.status(400);
-            return res.render('sign-up.ejs', {
-                csrfToken: req.session.csrfToken,
-                error: e.message,
-                fields: req.body,
-            });
-        }
     };
 }

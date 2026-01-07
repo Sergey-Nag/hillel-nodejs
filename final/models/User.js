@@ -36,7 +36,15 @@ User.init(
         },
         password: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
+        },
+        oauthProvider: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        oauthId: {
+            type: DataTypes.STRING,
+            allowNull: true,
         },
         role: {
             type: DataTypes.ENUM('Admin', 'User'),

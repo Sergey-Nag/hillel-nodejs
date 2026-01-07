@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import express from 'express';
 import session from 'express-session';
 import helmet from 'helmet';
+import passport from '../oAuth/passport.js';
 import { HOST, SECRET } from '../config.js';
 import AuthController from '../constollers/AuthController.js';
 import CodeController from '../constollers/CodeController.js';
@@ -34,23 +35,24 @@ function initMiddlewares(app) {
             },
         })
     );
+    app.use(passport.initialize());
+    app.use(passport.session());
     app.use(createCsrfTokenMiddleware);
 }
 
 function initErrorHandling(app) {
     app.use((err, req, res, next) => {
-        console.log('>>', err);
-        // if (err) {
-        //     res.status(500).send(err.message);
-        // }
+        if (err) {
+            res.status(500).send(err.message);
+        }
 
-        // try {
-        //     next();
-        // } catch (e) {
-        //     console.log(e);
-        // }
+        try {
+            next();
+        } catch (e) {
+            console.log(e);
+        }
 
-        // res.status(500).render('error.ejs', { code: 500, })
+        res.status(500).render('error.ejs', { code: 500, })
     });
 }
 

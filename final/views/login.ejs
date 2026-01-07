@@ -6,6 +6,26 @@
 <head>
     <%- include('partial/head') %>
     <title>Login</title>
+    <style>
+        .oauth-wrapper {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+        }
+        .oauth-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 4px;
+            font-weight: 500;
+            text-decoration: none; 
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+        }
+        .oauth-btn svg {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -22,13 +42,28 @@
             </div>
             <input type="hidden" name="__csrfToken" value="<%= csrfToken %>">
             <button type="submit">Login</button>
-            <p style="text-align: center;">
-                or <a href="/signup">Sign up</a>
-            </p>
         </form>
+        <div class="oauth-wrapper">
+            <a href="/auth/google" class="oauth-btn" style="background: #4285f4; color: white;">
+                <%- include('partial/google-icon') %>
+                Continue with Google
+            </a>
+            <a href="/auth/github" class="oauth-btn" style="background: #333; color: white;">
+                <%- include('partial/github-icon') %>
+                Continue with GitHub
+            </a>
+        </div>
+
         <% if (error) { %>
             <p class="error-message"><%= error %></p>
         <% } %>
+        <hr>
+
+        <div>
+            <p style="text-align: center;">
+                or <a href="/signup">Sign up</a>
+            </p>
+        </div>
     </div>
 
     <script src="js/login.js"></script>

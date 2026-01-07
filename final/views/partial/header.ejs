@@ -8,6 +8,15 @@
     <div class="header-title">
         <h2>Url Shortener</h2>
         <div class="user-info">
+            <% if (user.oauthProvider) { %>
+                <span style="margin-right: 5px">
+            <% if (user.oauthProvider === 'github') { %>
+                <%- include('github-icon') %>
+            <% } else if (user.oauthProvider === 'google') { %>
+                <%- include('google-icon') %>
+            <% } %>
+                </span>
+            <% } %>
             <span class="user-name">User: <b><%= user.name + ' ' + (user.surname ?? '') %></b></span>
             <a href="/logout">Logout</a>
         </div>

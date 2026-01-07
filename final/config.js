@@ -34,6 +34,11 @@ const POSTGRESS_CONFIG = {
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin';
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@admin.aa';
 
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '';
+const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID || '';
+const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET || '';
+
 export {
     PORT,
     HOST,
@@ -47,4 +52,8 @@ export {
     POSTGRESS_CONFIG,
     ADMIN_PASSWORD,
     ADMIN_EMAIL,
+    GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET,
+    GITHUB_CLIENT_ID,
+    GITHUB_CLIENT_SECRET,
 };
